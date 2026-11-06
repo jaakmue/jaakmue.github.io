@@ -481,7 +481,9 @@
         "russland",
         "wissenschaftlich"
       ],
-      "collections": [],
+      "collections": [
+        "ukraine-krieg"
+      ],
       "fav": false,
       "added": "2026-11-06"
     },
