@@ -161,14 +161,14 @@
     {
       "id": "ukraine",
       "group": "countries",
-      "de": "Ukraine",
-      "en": ""
+      "de": "Ukraine 🇺🇦",
+      "en": "Ukraine 🇺🇦"
     },
     {
       "id": "russland",
       "group": "countries",
-      "de": "Russland",
-      "en": ""
+      "de": "Russland 🇷🇺",
+      "en": "Russia 🇷🇺"
     }
   ],
   "collections": [],
