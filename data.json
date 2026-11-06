@@ -495,7 +495,9 @@
         "iran",
         "marxism"
       ],
-      "collections": [],
+      "collections": [
+        "nahostkonflikt"
+      ],
       "fav": true,
       "added": "2026-11-06"
     }
