@@ -283,7 +283,9 @@
         "propaganda",
         "syrien"
       ],
-      "collections": [],
+      "collections": [
+        "medien-propaganda"
+      ],
       "fav": true,
       "added": "2026-11-06"
     },
