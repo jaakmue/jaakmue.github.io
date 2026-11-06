@@ -523,6 +523,28 @@
       ],
       "fav": false,
       "added": "2026-11-06"
+    },
+    {
+      "id": "rmw5efop6",
+      "title": "Tiananmen Square Massacre – Facts, Fiction and Propaganda",
+      "url": "https://worldaffairs.blog/2019/06/02/tiananmen-square-massacre-facts-fiction-and-propaganda/",
+      "type": "article",
+      "author": "Chris Kanthan",
+      "year": 2019,
+      "lang": "en",
+      "descDe": "Übersichtlicher Blogpost über Propaganda zum \"Tiananmensquare-Massaker\". Viele Primärquellen wie Fotos/Videos und Zeugenaussagen.",
+      "descEn": "Accessible blog post about propaganda regarding the \"Tiananmen Square Massacre.\" Numerous primary sources, such as photographs/videos, and eyewitness accounts.",
+      "tags": [
+        "china",
+        "history",
+        "propaganda"
+      ],
+      "collections": [
+        "china-verstehen",
+        "medien-propaganda"
+      ],
+      "fav": false,
+      "added": "2026-11-06"
     }
   ]
 }
