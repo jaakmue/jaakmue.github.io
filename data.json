@@ -190,6 +190,11 @@
       "id": "medien-propaganda",
       "de": "Medien & Propaganda",
       "en": "Media & Propaganda"
+    },
+    {
+      "id": "ukraine-krieg",
+      "de": "Ukraine-Krieg",
+      "en": "War in Ukraine"
     }
   ],
   "resources": [
