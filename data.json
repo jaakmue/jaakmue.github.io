@@ -121,6 +121,12 @@
       "group": "countries",
       "de": "Sri Lanka 🇱🇰",
       "en": "Sri Lanka 🇱🇰"
+    },
+    {
+      "id": "syrien",
+      "de": "Syrien 🇸🇾",
+      "en": "Syria 🇸🇾",
+      "group": "countries"
     }
   ],
   "collections": [
