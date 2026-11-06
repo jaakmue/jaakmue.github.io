@@ -133,6 +133,12 @@
       "de": "Palästina 🇵🇸",
       "en": "Palestine 🇵🇸",
       "group": "countries"
+    },
+    {
+      "id": "imperialismus",
+      "de": "Imperialismus",
+      "en": "Imperialism",
+      "group": "topics"
     }
   ],
   "collections": [
