@@ -175,7 +175,9 @@
     {
       "id": "china-verstehen",
       "de": "China Basics",
-      "en": "Understanding Basics"
+      "en": "China Basics",
+      "descDe": "China sozialistisch? Kapitalistisch? Imperialistisch?",
+      "descEn": "China socialist? Capitalist? Imperialist?"
     },
     {
       "id": "nahostkonflikt",
