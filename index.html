@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Fundus</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231d1f21'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%23baa2a2'%3EF%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#1d1f21; --panel:#222427; --panel2:#282a2e; --line:#313438;
+  --fg:#baa2a2; --dim:#998686; --strong:#d9c7c7; --star:#f5c518; --danger:#e08080;
+  --hdr:52px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+a,a:visited{color:var(--fg);text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:2px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+input,select,textarea{background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:5px 8px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--dim)}
+:focus-visible{outline:1px solid var(--fg);outline-offset:1px}
+[hidden]{display:none!important}
+
+/* Header */
+.top{position:sticky;top:0;z-index:20;height:var(--hdr);display:flex;align-items:center;gap:10px;padding:0 14px;background:var(--bg);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;gap:10px;min-width:0;white-space:nowrap}
+.brand h1{margin:0;font:600 19px/1 Georgia,"Times New Roman",serif;color:var(--strong);letter-spacing:.3px}
+.count{color:var(--dim);font-size:12px}
+#q{flex:1;min-width:120px;max-width:520px;margin-left:auto}
+.btn{border:1px solid var(--line);border-radius:4px;padding:5px 9px;background:var(--panel);white-space:nowrap}
+.btn:hover{border-color:var(--dim)}
+.btn.primary{background:var(--fg);color:var(--bg);border-color:var(--fg);font-weight:600}
+.btn.danger{color:var(--danger)}
+.langsw{display:flex;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.langsw button{padding:5px 8px;color:var(--dim)}
+.langsw button.on{background:var(--panel2);color:var(--strong);font-weight:600}
+.only-mobile{display:none}
+
+/* Admin bar */
+.adminbar{display:flex;align-items:center;gap:8px;padding:6px 14px;background:var(--panel);border-bottom:1px solid var(--line);font-size:13px}
+.adminbar .who{color:var(--dim);margin-right:auto}
+
+/* Layout */
+.wrap{display:grid;grid-template-columns:250px 1fr;min-height:calc(100vh - var(--hdr) - 40px)}
+aside{position:sticky;top:var(--hdr);align-self:start;max-height:calc(100vh - var(--hdr));overflow:auto;padding:10px 10px 30px 14px;border-right:1px solid var(--line);scrollbar-width:thin}
+main{min-width:0;padding:0 0 30px}
+.sec{margin-bottom:12px}
+.sec h3{margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--dim);font-weight:600}
+.facet{display:flex;justify-content:space-between;width:100%;text-align:left;padding:2px 6px;border-radius:3px}
+.facet:hover{background:var(--panel2)}
+.facet.on{background:var(--panel2);color:var(--strong);font-weight:600}
+.facet .n,.tag .n{color:var(--dim);font-size:12px;font-weight:400}
+.star-ico{color:var(--star)}
+details.grp{margin-bottom:6px}
+details.grp summary{cursor:pointer;color:var(--dim);font-size:12px;padding:2px 0;list-style:none}
+details.grp summary::before{content:"▸ ";display:inline-block;width:12px}
+details.grp[open] summary::before{content:"▾ "}
+.tags{display:flex;flex-wrap:wrap;gap:3px;padding-top:3px}
+.tag{border:1px solid var(--line);border-radius:3px;padding:0 6px;font-size:12px;line-height:20px;white-space:nowrap}
+.tag:hover{border-color:var(--dim)}
+.tag.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.tag.on .n{color:var(--bg)}
+#tagFilter{width:100%;font-size:12px;padding:3px 7px;margin-bottom:4px}
+
+/* Active filters */
+.activebar{display:flex;flex-wrap:wrap;align-items:center;gap:5px;padding:7px 14px;border-bottom:1px solid var(--line);font-size:12px;color:var(--dim)}
+.activebar .chip{border:1px solid var(--line);border-radius:3px;padding:0 4px 0 7px;color:var(--fg);display:inline-flex;align-items:center;gap:4px;line-height:20px}
+.activebar .chip button{color:var(--dim);padding:0 3px}
+.activebar .chip button:hover{color:var(--strong)}
+.linkbtn{color:var(--dim);text-decoration:underline;text-underline-offset:2px}
+.linkbtn:hover{color:var(--strong)}
+
+/* Resource rows */
+.res{position:relative;padding:8px 14px 9px 36px;border-bottom:1px solid var(--line)}
+.res:hover{background:#212326}
+.res.flash{animation:flash 1.6s ease}
+@keyframes flash{0%,40%{background:#3a3236}100%{background:transparent}}
+.res .st{position:absolute;left:12px;top:8px;width:18px;text-align:center;font-size:15px;line-height:20px;color:var(--star)}
+.res .st.off{color:#4a4d52}
+.res .st.click:hover{color:var(--star)}
+.res .head{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px}
+.res .title{font-weight:600;color:var(--strong);font-size:15px}
+.res a.title,.res a.title:visited{color:var(--strong)}
+.res .ext{font-size:11px;color:var(--dim);margin-left:3px}
+.res .meta{color:var(--dim);font-size:12.5px}
+.res .meta button:hover{text-decoration:underline;text-underline-offset:2px;color:var(--fg)}
+.res .desc{margin:2px 0 4px;max-width:900px}
+.res .fallback{color:var(--dim);font-size:11px;margin-left:4px}
+.res .foot{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.res .col{font-size:12px;color:var(--dim);margin-left:4px}
+.res .col:hover{color:var(--fg);text-decoration:underline;text-underline-offset:2px}
+.res .adm{position:absolute;right:10px;top:7px;display:none;gap:4px}
+body.admin .res:hover .adm,body.admin .res:focus-within .adm{display:flex}
+.adm button{font-size:12px;border:1px solid var(--line);border-radius:3px;padding:1px 7px;background:var(--panel)}
+.adm button:hover{border-color:var(--dim)}
+.empty{padding:40px 14px;color:var(--dim)}
+
+footer{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-top:1px solid var(--line);color:var(--dim);font-size:12px}
+.lock{color:#4f5257;padding:2px}
+.lock:hover{color:var(--fg)}
+
+/* Modal */
+.overlay{position:fixed;inset:0;z-index:50;background:rgba(10,10,12,.7);display:flex;align-items:flex-start;justify-content:center;padding:5vh 12px;overflow:auto}
+.modal{background:var(--panel);border:1px solid var(--line);border-radius:6px;width:100%;max-width:640px;padding:16px 18px}
+.modal h2{margin:0 0 12px;font:600 17px/1.2 Georgia,serif;color:var(--strong)}
+.modal .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal .row3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
+.fld{display:flex;flex-direction:column;gap:3px;margin-bottom:10px;min-width:0}
+.fld>span{font-size:12px;color:var(--dim)}
+.fld input,.fld select,.fld textarea{width:100%}
+.fld input[type=checkbox],.checks input,.inline input[type=checkbox]{width:auto;flex:none;margin:0}
+.mrow>*{min-width:0}
+.mrow input,.mrow select{width:100%}
+.modal.wide{max-width:760px}
+textarea{resize:vertical;min-height:52px}
+.hint{font-size:12px;color:var(--dim);margin:0 0 10px}
+.hint a{text-decoration:underline}
+.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:6px}
+.err{color:var(--danger);font-size:13px;margin:0 0 8px}
+.tagbox{display:flex;flex-wrap:wrap;gap:4px;align-items:center;padding:4px;border:1px solid var(--line);border-radius:4px;background:var(--panel2)}
+.tagbox input{border:0;background:none;flex:1;min-width:140px;padding:2px 4px}
+.tagbox .tag{display:inline-flex;gap:4px;align-items:center}
+.tagbox .tag button{color:var(--dim)}
+.sugg{border:1px solid var(--line);border-top:0;border-radius:0 0 4px 4px;background:var(--panel2);max-height:200px;overflow:auto}
+.sugg button{display:block;width:100%;text-align:left;padding:4px 8px}
+.sugg button:hover,.sugg button.hi{background:var(--line)}
+.sugg .grp{color:var(--dim);font-size:11px;margin-left:6px}
+.inline{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.checks{display:flex;flex-wrap:wrap;gap:4px 12px}
+.checks label{display:flex;gap:5px;align-items:center;cursor:pointer}
+.tabs{display:flex;flex-wrap:wrap;gap:2px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.tabs button{padding:5px 10px;color:var(--dim);border-bottom:2px solid transparent}
+.tabs button.on{color:var(--strong);border-bottom-color:var(--fg)}
+.mrow{display:grid;grid-template-columns:1fr 1fr 34px 26px;gap:6px;align-items:center;margin-bottom:5px}
+.mrow.withgrp{grid-template-columns:1fr 1fr 130px 34px 26px}
+.mrow .n{color:var(--dim);font-size:12px;text-align:right}
+.mrow .del{color:var(--dim);font-size:16px}
+.mrow .del:hover{color:var(--danger)}
+.mhead{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.6px}
+.mlist{max-height:52vh;overflow:auto;padding-right:4px}
+
+#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:8px 14px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.show{opacity:1}
+#toast.bad{border-color:var(--danger);color:var(--danger)}
+
+@media (max-width:760px){
+  .top{gap:6px;padding:0 10px}
+  .count,.hide-m{display:none}
+  .only-mobile{display:inline-block}
+  .wrap{grid-template-columns:1fr}
+  aside{display:none;position:static;max-height:none;border-right:0;border-bottom:1px solid var(--line)}
+  aside.open{display:block}
+  .res{padding-right:10px}
+  body.admin .res .adm{display:flex;position:static;margin-top:4px}
+  .modal .row,.modal .row3{grid-template-columns:1fr}
+  .mrow,.mrow.withgrp{grid-template-columns:1fr 1fr 26px}
+  .mrow .n,.mrow select{grid-column:span 1}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><h1 id="siteName">Fundus</h1><span class="count" id="count"></span></div>
+  <input id="q" type="search" autocomplete="off">
+  <select id="sort" class="hide-m" aria-label="Sort"></select>
+  <button class="btn hide-m" data-act="random" id="randomBtn"></button>
+  <div class="langsw" role="group" aria-label="Language">
+    <button data-act="ui" data-id="de">DE</button><button data-act="ui" data-id="en">EN</button>
+  </div>
+  <button class="btn only-mobile" data-act="toggle-side" id="sideBtn"></button>
+</header>
+<div class="adminbar" id="adminbar" hidden>
+  <span class="who" id="adminWho"></span>
+  <button class="btn primary" data-act="add" id="addBtn"></button>
+  <button class="btn" data-act="manage" id="manageBtn"></button>
+  <button class="btn hide-m" data-act="export" id="exportBtn"></button>
+  <button class="btn" data-act="logout" id="logoutBtn"></button>
+</div>
+<div class="wrap">
+  <aside id="side"></aside>
+  <main>
+    <div class="activebar" id="active"></div>
+    <div id="list"></div>
+  </main>
+</div>
+<footer>
+  <span id="footName">Fundus</span>
+  <button class="lock" data-act="admin-open" id="lockBtn" title="Admin">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+  </button>
+</footer>
+<div class="overlay" id="overlay" hidden><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+'use strict';
+/* =========================================================
+   Fundus – öffentliche Ressourcensammlung
+   Daten: data.json (im selben Repo). Bearbeiten nur mit eigenem
+   GitHub-Token, der ausschließlich im eigenen Browser liegt.
+   In diesem Quelltext stehen keine Passwörter oder Tokens.
+   ========================================================= */
+
+const T = {
+  de: {
+    search: 'Suchen … (Titel, Autor, Beschreibung, Tags)',
+    count: n => `${n} Ressource${n === 1 ? '' : 'n'}`,
+    shown: (n, t) => `${n} von ${t} angezeigt`,
+    favorites: 'Nur Favoriten', types: 'Typ', collections: 'Sammlungen', languages: 'Sprache', tags: 'Tags',
+    otherTags: 'Weitere', filterTags: 'Tags filtern …', reset: 'Alle Filter zurücksetzen', noFilter: 'Keine Filter aktiv',
+    sort: { added: 'Neueste zuerst', yearDesc: 'Jahr ↓', yearAsc: 'Jahr ↑', title: 'Titel A–Z', author: 'Autor A–Z' },
+    random: 'Zufall', filters: 'Filter', noResults: 'Keine Ressourcen gefunden.', author: 'Autor', search_: 'Suche', fav: 'Favoriten',
+    edit: 'Bearbeiten', del: 'Löschen', open: 'öffnen',
+    admin: 'Admin-Modus', add: '+ Ressource', manage: 'Verwalten', export: 'Backup', logout: 'Abmelden',
+    loginTitle: 'Admin-Anmeldung', owner: 'GitHub-Benutzername', repo: 'Repository', branch: 'Branch', token: 'GitHub-Token',
+    remember: 'Auf diesem Gerät merken', login: 'Anmelden', cancel: 'Abbrechen', save: 'Speichern', close: 'Schließen',
+    loginHint: 'Der Token wird nur in diesem Browser gespeichert und direkt an GitHub geschickt. Er steht nirgends im Quelltext.',
+    newToken: 'Neuen Token erstellen',
+    resNew: 'Neue Ressource', resEdit: 'Ressource bearbeiten',
+    fTitle: 'Titel *', fUrl: 'Link (optional)', fType: 'Typ', fAuthor: 'Autor(en), mit Komma getrennt', fYear: 'Jahr', fLang: 'Sprache',
+    fDescDe: 'Beschreibung Deutsch', fDescEn: 'Beschreibung Englisch', fTags: 'Tags', fCols: 'Sammlungen', fFav: 'Favorit',
+    tagPh: 'Tag suchen oder neu eintippen + Enter', newTagIn: 'Neue Tags in Gruppe:', createTag: q => `+ „${q}“ als neuen Tag anlegen`,
+    newCol: 'Neue Sammlung …', none: '—', noGroup: '(ohne Gruppe)',
+    needTitle: 'Bitte einen Titel eingeben.', badUrl: 'Der Link muss mit http:// oder https:// beginnen.',
+    confirmDel: t => `„${t}“ wirklich löschen?`,
+    saving: 'Speichere …', saved: 'Gespeichert. Für alle Besucher in ca. 1 Minute sichtbar.',
+    mTitle: 'Verwalten', mSite: 'Seitenname', mTypes: 'Typen', mLangs: 'Sprachen', mGroups: 'Tag-Gruppen', mTags: 'Tags', mCols: 'Sammlungen',
+    mDe: 'Deutsch', mEn: 'Englisch (optional)', mGroup: 'Gruppe', mUsed: 'genutzt', mAdd: '+ hinzufügen', mFilter: 'Filtern …',
+    mInUse: n => `Wird ${n}× verwendet. Trotzdem löschen? Die Zuordnungen werden entfernt.`,
+    mGroupInUse: n => `Diese Gruppe enthält ${n} Tags. Trotzdem löschen? Die Tags bleiben erhalten, nur ohne Gruppe.`,
+    errAuth: 'Token ungültig oder abgelaufen.', errNotFound: 'Repository, Branch oder data.json nicht gefunden – oder der Token hat keinen Zugriff darauf.',
+    errPerm: 'Der Token darf dieses Repository nicht bearbeiten (Contents: Read and write nötig).', errNet: 'Verbindung zu GitHub fehlgeschlagen.',
+    errLoad: 'data.json konnte nicht geladen werden.',
+    fallbackNote: '(EN)',
+  },
+  en: {
+    search: 'Search … (title, author, description, tags)',
+    count: n => `${n} resource${n === 1 ? '' : 's'}`,
+    shown: (n, t) => `${n} of ${t} shown`,
+    favorites: 'Favorites only', types: 'Type', collections: 'Collections', languages: 'Language', tags: 'Tags',
+    otherTags: 'Other', filterTags: 'Filter tags …', reset: 'Reset all filters', noFilter: 'No filters active',
+    sort: { added: 'Newest first', yearDesc: 'Year ↓', yearAsc: 'Year ↑', title: 'Title A–Z', author: 'Author A–Z' },
+    random: 'Random', filters: 'Filters', noResults: 'No resources found.', author: 'Author', search_: 'Search', fav: 'Favorites',
+    edit: 'Edit', del: 'Delete', open: 'open',
+    admin: 'Admin mode', add: '+ Resource', manage: 'Manage', export: 'Backup', logout: 'Log out',
+    loginTitle: 'Admin login', owner: 'GitHub username', repo: 'Repository', branch: 'Branch', token: 'GitHub token',
+    remember: 'Remember on this device', login: 'Log in', cancel: 'Cancel', save: 'Save', close: 'Close',
+    loginHint: 'The token is stored only in this browser and sent directly to GitHub. It never appears in the source code.',
+    newToken: 'Create a new token',
+    resNew: 'New resource', resEdit: 'Edit resource',
+    fTitle: 'Title *', fUrl: 'Link (optional)', fType: 'Type', fAuthor: 'Author(s), comma-separated', fYear: 'Year', fLang: 'Language',
+    fDescDe: 'Description German', fDescEn: 'Description English', fTags: 'Tags', fCols: 'Collections', fFav: 'Favorite',
+    tagPh: 'Search tag or type a new one + Enter', newTagIn: 'New tags go into group:', createTag: q => `+ create new tag “${q}”`,
+    newCol: 'New collection …', none: '—', noGroup: '(no group)',
+    needTitle: 'Please enter a title.', badUrl: 'The link must start with http:// or https://.',
+    confirmDel: t => `Really delete “${t}”?`,
+    saving: 'Saving …', saved: 'Saved. Visible to all visitors in about 1 minute.',
+    mTitle: 'Manage', mSite: 'Site name', mTypes: 'Types', mLangs: 'Languages', mGroups: 'Tag groups', mTags: 'Tags', mCols: 'Collections',
+    mDe: 'German', mEn: 'English (optional)', mGroup: 'Group', mUsed: 'used', mAdd: '+ add', mFilter: 'Filter …',
+    mInUse: n => `Used ${n}×. Delete anyway? The assignments will be removed.`,
+    mGroupInUse: n => `This group contains ${n} tags. Delete anyway? The tags are kept, just without a group.`,
+    errAuth: 'Token invalid or expired.', errNotFound: 'Repository, branch or data.json not found – or the token has no access to it.',
+    errPerm: 'The token may not edit this repository (Contents: Read and write required).', errNet: 'Could not connect to GitHub.',
+    errLoad: 'Could not load data.json.',
+    fallbackNote: '(DE)',
+  }
+};
+
+/* ---------- State ---------- */
+const S = {
+  ui: 'de',
+  data: null,
+  admin: false,
+  f: { q: '', types: new Set(), col: '', langs: new Set(), tags: new Set(), author: '', fav: false, sort: 'added' },
+  tagFilter: '',
+  busy: false,
+};
+const LS_UI = 'fundus-ui', LS_ADMIN = 'fundus-admin', SS_TOKEN = 'fundus-token', LS_GROUP = 'fundus-lastgroup';
+
+const $ = s => document.querySelector(s);
+const t = () => T[S.ui];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const safeUrl = u => /^https?:\/\/[^\s]+$/i.test(String(u || '').trim()) ? String(u).trim() : '';
+const nm = o => o ? (o[S.ui] || o.de || o.en || o.id) : '';
+const byId = (arr, id) => (arr || []).find(x => x.id === id);
+const collator = () => new Intl.Collator(S.ui, { sensitivity: 'base', numeric: true });
+const splitAuthors = a => String(a || '').split(/\s*[,;]\s*|\s+&\s+|\s+und\s+|\s+and\s+/i).map(s => s.trim()).filter(Boolean);
+const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+function slug(s) {
+  return norm(s).replace(/ß/g, 'ss').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'x';
+}
+function uniqueId(base, taken) {
+  let id = base, i = 2;
+  while (taken.has(id)) id = `${base}-${i++}`;
+  taken.add(id);
+  return id;
+}
+function normalize(d) {
+  d = d && typeof d === 'object' ? d : {};
+  d.siteName = d.siteName || 'Fundus';
+  for (const k of ['types', 'languages', 'tagGroups', 'tags', 'collections', 'resources']) if (!Array.isArray(d[k])) d[k] = [];
+  for (const r of d.resources) { r.tags = Array.isArray(r.tags) ? r.tags : []; r.collections = Array.isArray(r.collections) ? r.collections : []; }
+  return d;
+}
+
+/* ---------- URL <-> filter ---------- */
+function readUrl() {
+  const p = new URLSearchParams(location.search), f = S.f;
+  f.q = p.get('q') || '';
+  f.types = new Set((p.get('type') || '').split(',').filter(Boolean));
+  f.col = p.get('col') || '';
+  f.langs = new Set((p.get('lang') || '').split(',').filter(Boolean));
+  f.tags = new Set((p.get('tag') || '').split(',').filter(Boolean));
+  f.author = p.get('author') || '';
+  f.fav = p.get('fav') === '1';
+  f.sort = T.de.sort[p.get('sort')] ? p.get('sort') : 'added';
+}
+function writeUrl() {
+  const f = S.f, p = new URLSearchParams();
+  if (f.q) p.set('q', f.q);
+  if (f.types.size) p.set('type', [...f.types].join(','));
+  if (f.col) p.set('col', f.col);
+  if (f.langs.size) p.set('lang', [...f.langs].join(','));
+  if (f.tags.size) p.set('tag', [...f.tags].join(','));
+  if (f.author) p.set('author', f.author);
+  if (f.fav) p.set('fav', '1');
+  if (f.sort !== 'added') p.set('sort', f.sort);
+  const qs = p.toString().replace(/%2C/g, ',');
+  try { history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash); } catch (e) { }
+}
+
+/* ---------- Filtering ---------- */
+function haystack(r, d) {
+  const parts = [r.title, r.author, r.year, r.descDe, r.descEn,
+    ...r.tags.map(id => { const x = byId(d.tags, id); return x ? `${x.de} ${x.en}` : ''; }),
+    ...r.collections.map(id => { const x = byId(d.collections, id); return x ? `${x.de} ${x.en}` : ''; }),
+    (o => o ? `${o.de} ${o.en}` : '')(byId(d.types, r.type))];
+  return norm(parts.join(' '));
+}
+function filtered() {
+  const d = S.data, f = S.f;
+  const words = norm(f.q).split(/\s+/).filter(Boolean);
+  let list = d.resources.filter(r => {
+    if (f.fav && !r.fav) return false;
+    if (f.types.size && !f.types.has(r.type)) return false;
+    if (f.col && !r.collections.includes(f.col)) return false;
+    if (f.langs.size && !f.langs.has(r.lang)) return false;
+    for (const tg of f.tags) if (!r.tags.includes(tg)) return false;
+    if (f.author && !splitAuthors(r.author).some(a => norm(a) === norm(f.author))) return false;
+    if (words.length) { const h = haystack(r, d); if (!words.every(w => h.includes(w))) return false; }
+    return true;
+  });
+  const c = collator(), y = r => Number(r.year) || 0;
+  const s = {
+    added: (a, b) => String(b.added || '').localeCompare(String(a.added || '')) || String(b.id).localeCompare(String(a.id)),
+    yearDesc: (a, b) => y(b) - y(a) || c.compare(a.title, b.title),
+    yearAsc: (a, b) => (y(a) || 9999) - (y(b) || 9999) || c.compare(a.title, b.title),
+    title: (a, b) => c.compare(a.title, b.title),
+    author: (a, b) => c.compare(a.author || '￿', b.author || '￿') || c.compare(a.title, b.title),
+  }[f.sort];
+  return list.sort(s);
+}
+function counts(key) {
+  const m = new Map();
+  for (const r of S.data.resources) {
+    const vals = key === 'tags' || key === 'collections' ? r[key] : [r[key]];
+    for (const v of vals) if (v) m.set(v, (m.get(v) || 0) + 1);
+  }
+  return m;
+}
+
+/* ---------- Render ---------- */
+function renderStatic() {
+  const L = t();
+  document.documentElement.lang = S.ui;
+  document.title = S.data ? S.data.siteName : 'Fundus';
+  $('#siteName').textContent = $('#footName').textContent = S.data ? S.data.siteName : 'Fundus';
+  $('#q').placeholder = L.search;
+  $('#sort').innerHTML = Object.entries(L.sort).map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join('');
+  $('#sort').value = S.f.sort;
+  $('#randomBtn').textContent = '⚄ ' + L.random;
+  $('#sideBtn').textContent = L.filters;
+  document.querySelectorAll('.langsw button').forEach(b => b.classList.toggle('on', b.dataset.id === S.ui));
+  $('#adminbar').hidden = !S.admin;
+  document.body.classList.toggle('admin', S.admin);
+  if (S.admin) {
+    const c = adminCfg();
+    $('#adminWho').textContent = `${L.admin} · ${c.owner}/${c.repo}`;
+    $('#addBtn').textContent = L.add; $('#manageBtn').textContent = L.manage;
+    $('#exportBtn').textContent = L.export; $('#logoutBtn').textContent = L.logout;
+  }
+}
+
+function renderSide() {
+  const d = S.data, f = S.f, L = t(), c = collator();
+  const sortNm = arr => [...arr].sort((a, b) => c.compare(nm(a), nm(b)));
+  const favN = d.resources.filter(r => r.fav).length;
+  let h = `<div class="sec"><button class="facet ${f.fav ? 'on' : ''}" data-act="fav"><span><span class="star-ico">★</span> ${esc(L.favorites)}</span><span class="n">${favN}</span></button></div>`;
+
+  const tc = counts('type');
+  h += `<div class="sec"><h3>${esc(L.types)}</h3>` + d.types.filter(x => tc.get(x.id) || f.types.has(x.id)).map(x =>
+    `<button class="facet ${f.types.has(x.id) ? 'on' : ''}" data-act="type" data-id="${esc(x.id)}"><span>${esc(nm(x))}</span><span class="n">${tc.get(x.id) || 0}</span></button>`).join('') + `</div>`;
+
+  const cc = counts('collections');
+  const cols = sortNm(d.collections).filter(x => cc.get(x.id) || f.col === x.id);
+  if (cols.length) h += `<div class="sec"><h3>${esc(L.collections)}</h3>` + cols.map(x =>
+    `<button class="facet ${f.col === x.id ? 'on' : ''}" data-act="col" data-id="${esc(x.id)}"><span>${esc(nm(x))}</span><span class="n">${cc.get(x.id) || 0}</span></button>`).join('') + `</div>`;
+
+  const lc = counts('lang');
+  const langs = d.languages.filter(x => lc.get(x.id) || f.langs.has(x.id));
+  if (langs.length > 1 || f.langs.size) h += `<div class="sec"><h3>${esc(L.languages)}</h3>` + langs.map(x =>
+    `<button class="facet ${f.langs.has(x.id) ? 'on' : ''}" data-act="lang" data-id="${esc(x.id)}"><span>${esc(nm(x))}</span><span class="n">${lc.get(x.id) || 0}</span></button>`).join('') + `</div>`;
+
+  const gc = counts('tags');
+  const used = d.tags.filter(x => gc.get(x.id) || f.tags.has(x.id));
+  if (used.length) {
+    h += `<div class="sec"><h3>${esc(L.tags)}</h3><input id="tagFilter" type="search" placeholder="${esc(L.filterTags)}" value="${esc(S.tagFilter)}">`;
+    const groups = [...d.tagGroups.map(g => ({ id: g.id, name: nm(g) })), { id: '', name: L.otherTags }];
+    for (const g of groups) {
+      const tags = sortNm(used.filter(x => (byId(d.tagGroups, x.group) ? x.group : '') === g.id));
+      if (!tags.length) continue;
+      h += `<details class="grp" open data-grp="${esc(g.id)}"><summary>${esc(g.name)}</summary><div class="tags">` + tags.map(x =>
+        `<button class="tag ${f.tags.has(x.id) ? 'on' : ''}" data-act="tag" data-id="${esc(x.id)}" data-s="${esc(norm(x.de + ' ' + (x.en || '')))}">${esc(nm(x))} <span class="n">${gc.get(x.id) || 0}</span></button>`).join('') + `</div></details>`;
+    }
+    h += `</div>`;
+  }
+  $('#side').innerHTML = h;
+  applyTagFilter();
+}
+function applyTagFilter() {
+  const q = norm(S.tagFilter).trim();
+  document.querySelectorAll('#side .grp').forEach(g => {
+    let any = false;
+    g.querySelectorAll('.tag').forEach(b => { const ok = !q || b.dataset.s.includes(q); b.hidden = !ok; any = any || ok; });
+    g.hidden = !any;
+  });
+}
+
+function renderActive(n) {
+  const d = S.data, f = S.f, L = t();
+  const chips = [];
+  const chip = (label, act, id) => chips.push(`<span class="chip">${esc(label)}<button data-act="${act}" data-id="${esc(id || '')}" aria-label="remove">×</button></span>`);
+  if (f.q) chip(`${L.search_}: „${f.q}“`, 'clear-q');
+  if (f.fav) chip(`★ ${L.fav}`, 'fav');
+  f.types.forEach(id => chip(nm(byId(d.types, id)) || id, 'type', id));
+  if (f.col) chip(nm(byId(d.collections, f.col)) || f.col, 'col', f.col);
+  f.langs.forEach(id => chip(nm(byId(d.languages, id)) || id, 'lang', id));
+  f.tags.forEach(id => chip('#' + (nm(byId(d.tags, id)) || id), 'tag', id));
+  if (f.author) chip(`${L.author}: ${f.author}`, 'author', f.author);
+  const total = d.resources.length;
+  $('#active').innerHTML = `<span>${esc(n === total ? L.count(total) : L.shown(n, total))}</span>` +
+    (chips.length ? ' · ' + chips.join('') + ` <button class="linkbtn" data-act="reset">${esc(L.reset)}</button>` : '');
+  $('#count').textContent = L.count(total);
+}
+
+function renderRow(r) {
+  const d = S.data, L = t();
+  const url = safeUrl(r.url);
+  const type = byId(d.types, r.type), lang = byId(d.languages, r.lang);
+  const meta = [];
+  if (type) meta.push(esc(nm(type)));
+  const authors = splitAuthors(r.author);
+  if (authors.length) meta.push(authors.map(a => `<button data-act="author" data-id="${esc(a)}">${esc(a)}</button>`).join(', '));
+  if (r.year) meta.push(esc(r.year));
+  if (lang) meta.push(esc(nm(lang)));
+  let desc = S.ui === 'en' ? r.descEn : r.descDe, fb = '';
+  if (!desc) { desc = S.ui === 'en' ? r.descDe : r.descEn; if (desc) fb = `<span class="fallback">${L.fallbackNote}</span>`; }
+  const tags = r.tags.map(id => byId(d.tags, id)).filter(Boolean)
+    .map(x => `<button class="tag ${S.f.tags.has(x.id) ? 'on' : ''}" data-act="tag" data-id="${esc(x.id)}">${esc(nm(x))}</button>`).join('');
+  const cols = r.collections.map(id => byId(d.collections, id)).filter(Boolean)
+    .map(x => `<button class="col" data-act="col" data-id="${esc(x.id)}">▸ ${esc(nm(x))}</button>`).join('');
+  const star = S.admin
+    ? `<button class="st click ${r.fav ? '' : 'off'}" data-act="star" data-id="${esc(r.id)}" title="${esc(L.fFav)}">${r.fav ? '★' : '☆'}</button>`
+    : (r.fav ? `<span class="st" title="${esc(L.fFav)}">★</span>` : '');
+  const title = url
+    ? `<a class="title" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(r.title)}</a><span class="ext">↗</span>`
+    : `<span class="title">${esc(r.title)}</span>`;
+  return `<article class="res" id="res-${esc(r.id)}">${star}
+    <div class="head"><span>${title}</span><span class="meta">${meta.join(' · ')}</span></div>
+    ${desc ? `<p class="desc">${esc(desc)}${fb}</p>` : ''}
+    ${tags || cols ? `<div class="foot">${tags}${cols}</div>` : ''}
+    ${S.admin ? `<div class="adm"><button data-act="edit" data-id="${esc(r.id)}">${esc(L.edit)}</button><button data-act="del" data-id="${esc(r.id)}">${esc(L.del)}</button></div>` : ''}
+  </article>`;
+}
+
+function render() {
+  if (!S.data) return;
+  renderStatic();
+  renderSide();
+  const list = filtered();
+  renderActive(list.length);
+  $('#list').innerHTML = list.length ? list.map(renderRow).join('') : `<div class="empty">${esc(t().noResults)}</div>`;
+  writeUrl();
+}
+
+/* ---------- Toast ---------- */
+let toastTimer;
+function toast(msg, bad = false, ms = 3500) {
+  const el = $('#toast');
+  el.textContent = msg; el.classList.toggle('bad', bad); el.classList.add('show');
+  clearTimeout(toastTimer);
+  if (ms) toastTimer = setTimeout(() => el.classList.remove('show'), ms);
+}
+
+/* ---------- GitHub API (nur im Admin-Modus) ---------- */
+function adminCfg() {
+  let c = {};
+  try { c = JSON.parse(localStorage.getItem(LS_ADMIN) || '{}'); } catch (e) { }
+  const tok = c.token || sessionStorage.getItem(SS_TOKEN) || '';
+  return { owner: c.owner || '', repo: c.repo || '', branch: c.branch || 'main', token: tok };
+}
+function guessRepo() {
+  const host = location.hostname, seg = location.pathname.split('/').filter(Boolean)[0] || '';
+  if (host.endsWith('.github.io')) {
+    const owner = host.split('.')[0];
+    return { owner, repo: seg && !seg.includes('.') ? seg : `${owner}.github.io` };
+  }
+  return { owner: '', repo: '' };
+}
+function b64enc(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+function b64dec(b64) {
+  const bin = atob(String(b64).replace(/\s/g, ''));
+  return new TextDecoder().decode(Uint8Array.from(bin, ch => ch.charCodeAt(0)));
+}
+function apiBase(c) { return `https://api.github.com/repos/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.repo)}/contents/data.json`; }
+function apiHeaders(c, accept = 'application/vnd.github+json') {
+  return { Authorization: `Bearer ${c.token}`, Accept: accept, 'X-GitHub-Api-Version': '2022-11-28' };
+}
+async function apiError(r) {
+  const L = t();
+  if (r.status === 401) return new Error(L.errAuth);
+  if (r.status === 404) return new Error(L.errNotFound);
+  if (r.status === 403) return new Error(L.errPerm);
+  let m = ''; try { m = (await r.json()).message || ''; } catch (e) { }
+  return new Error(`GitHub ${r.status}${m ? ': ' + m : ''}`);
+}
+async function ghLoad(c = adminCfg()) {
+  let r;
+  const url = `${apiBase(c)}?ref=${encodeURIComponent(c.branch)}`;
+  try { r = await fetch(url, { headers: apiHeaders(c), cache: 'no-store' }); } catch (e) { throw new Error(t().errNet); }
+  if (!r.ok) throw await apiError(r);
+  const j = await r.json();
+  let text;
+  if (j.content && j.encoding === 'base64') text = b64dec(j.content);
+  else {
+    const r2 = await fetch(url, { headers: apiHeaders(c, 'application/vnd.github.raw+json'), cache: 'no-store' });
+    if (!r2.ok) throw await apiError(r2);
+    text = await r2.text();
+  }
+  return { sha: j.sha, data: normalize(JSON.parse(text)) };
+}
+/* Jede Änderung: neueste Daten holen, Änderung anwenden, zurückschreiben.
+   So gehen auch Änderungen von einem anderen Gerät nicht verloren. */
+async function ghSave(mutate, message) {
+  if (S.busy) return false;
+  S.busy = true; toast(t().saving, false, 0);
+  const c = adminCfg();
+  try {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const { sha, data } = await ghLoad(c);
+      mutate(data);
+      const body = JSON.stringify({ message: `Fundus: ${message}`, content: b64enc(JSON.stringify(data, null, 2) + '\n'), sha, branch: c.branch });
+      let r;
+      try { r = await fetch(apiBase(c), { method: 'PUT', headers: { ...apiHeaders(c), 'Content-Type': 'application/json' }, body }); }
+      catch (e) { throw new Error(t().errNet); }
+      if (r.ok) { S.data = data; render(); toast(t().saved); return true; }
+      if ((r.status === 409 || r.status === 422) && attempt < 2) continue;
+      throw await apiError(r);
+    }
+  } catch (e) {
+    toast(e.message, true, 7000); return false;
+  } finally { S.busy = false; }
+}
+
+/* ---------- Modal helpers ---------- */
+function openModal(html) { $('#modal').innerHTML = html; $('#overlay').hidden = false; const f = $('#modal').querySelector('input:not([type=hidden]),textarea,select'); if (f) f.focus(); }
+function closeModal() { $('#overlay').hidden = true; $('#modal').innerHTML = ''; $('#modal').classList.remove('wide'); MODAL = null; }
+let MODAL = null; // aktiver Dialog-Zustand
+
+/* ---------- Login ---------- */
+function openLogin() {
+  const L = t(), c = adminCfg(), g = guessRepo();
+  MODAL = { kind: 'login' };
+  openModal(`<h2>${esc(L.loginTitle)}</h2>
+    <form id="loginForm">
+      <div class="row"><label class="fld"><span>${esc(L.owner)}</span><input name="owner" required value="${esc(c.owner || g.owner)}" autocomplete="username"></label>
+      <label class="fld"><span>${esc(L.repo)}</span><input name="repo" required value="${esc(c.repo || g.repo)}"></label></div>
+      <div class="row"><label class="fld"><span>${esc(L.token)}</span><input name="token" type="password" required autocomplete="current-password" value=""></label>
+      <label class="fld"><span>${esc(L.branch)}</span><input name="branch" required value="${esc(c.branch || 'main')}"></label></div>
+      <label class="inline" style="margin-bottom:10px"><input type="checkbox" name="remember" checked> ${esc(L.remember)}</label>
+      <p class="hint">${esc(L.loginHint)} <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">${esc(L.newToken)} ↗</a></p>
+      <p class="err" id="loginErr" hidden></p>
+      <div class="actions"><button type="button" class="btn" data-act="close">${esc(L.cancel)}</button><button class="btn primary" type="submit">${esc(L.login)}</button></div>
+    </form>`);
+}
+async function doLogin(form) {
+  const fd = new FormData(form);
+  const c = { owner: fd.get('owner').trim(), repo: fd.get('repo').trim(), branch: fd.get('branch').trim() || 'main', token: fd.get('token').trim() };
+  const errEl = $('#loginErr'); errEl.hidden = true;
+  try {
+    const { data } = await ghLoad(c);
+    const remember = fd.get('remember') === 'on';
+    localStorage.setItem(LS_ADMIN, JSON.stringify({ owner: c.owner, repo: c.repo, branch: c.branch, ...(remember ? { token: c.token } : {}) }));
+    if (remember) sessionStorage.removeItem(SS_TOKEN); else sessionStorage.setItem(SS_TOKEN, c.token);
+    S.admin = true; S.data = data; closeModal(); render();
+  } catch (e) { errEl.textContent = e.message; errEl.hidden = false; }
+}
+function logout() {
+  const c = adminCfg();
+  localStorage.setItem(LS_ADMIN, JSON.stringify({ owner: c.owner, repo: c.repo, branch: c.branch }));
+  sessionStorage.removeItem(SS_TOKEN);
+  S.admin = false; render();
+}
+
+/* ---------- Ressource bearbeiten ---------- */
+function openResForm(id) {
+  const d = S.data, L = t();
+  const r = id ? byId(d.resources, id) : null;
+  const lastGroup = localStorage.getItem(LS_GROUP) || (d.tagGroups[0] ? d.tagGroups[0].id : '');
+  MODAL = { kind: 'res', id: r ? r.id : null, tags: r ? r.tags.filter(x => byId(d.tags, x)) : [], newTags: [],
+    cols: r ? r.collections.filter(x => byId(d.collections, x)) : [], newCols: [], group: byId(d.tagGroups, lastGroup) ? lastGroup : '', hi: 0 };
+  const opt = (arr, sel) => `<option value="">${L.none}</option>` + arr.map(x => `<option value="${esc(x.id)}" ${x.id === sel ? 'selected' : ''}>${esc(nm(x))}</option>`).join('');
+  const authors = [...new Set(d.resources.flatMap(x => splitAuthors(x.author)))].sort(collator().compare);
+  openModal(`<h2>${esc(r ? L.resEdit : L.resNew)}</h2>
+    <form id="resForm" autocomplete="off">
+      <label class="fld"><span>${esc(L.fTitle)}</span><input name="title" value="${esc(r ? r.title : '')}"></label>
+      <label class="fld"><span>${esc(L.fUrl)}</span><input name="url" type="url" placeholder="https://…" value="${esc(r ? r.url : '')}"></label>
+      <div class="row3">
+        <label class="fld"><span>${esc(L.fAuthor)}</span><input name="author" list="authorList" value="${esc(r ? r.author : '')}"><datalist id="authorList">${authors.map(a => `<option value="${esc(a)}">`).join('')}</datalist></label>
+        <label class="fld"><span>${esc(L.fYear)}</span><input name="year" type="number" min="0" max="2999" value="${esc(r ? r.year : '')}"></label>
+        <label class="fld"><span>${esc(L.fLang)}</span><select name="lang">${opt(d.languages, r ? r.lang : '')}</select></label>
+      </div>
+      <div class="row">
+        <label class="fld"><span>${esc(L.fType)}</span><select name="type">${opt(d.types, r ? r.type : (d.types[0] || {}).id)}</select></label>
+        <div class="fld" style="justify-content:flex-end"><label class="inline" style="padding:6px 0;cursor:pointer"><input type="checkbox" name="fav" ${r && r.fav ? 'checked' : ''}> <span class="star-ico">★</span> ${esc(L.fFav)}</label></div>
+      </div>
+      <label class="fld"><span>${esc(L.fDescDe)}</span><textarea name="descDe" rows="2">${esc(r ? r.descDe : '')}</textarea></label>
+      <label class="fld"><span>${esc(L.fDescEn)}</span><textarea name="descEn" rows="2">${esc(r ? r.descEn : '')}</textarea></label>
+      <div class="fld"><span>${esc(L.fTags)}</span>
+        <div class="tagbox" id="tagbox"></div>
+        <div class="sugg" id="sugg" hidden></div>
+        <div class="inline" style="margin-top:4px;font-size:12px;color:var(--dim)">${esc(L.newTagIn)}
+          <select id="newTagGroup" style="padding:2px 6px;font-size:12px"><option value="">${esc(L.noGroup)}</option>${d.tagGroups.map(g => `<option value="${esc(g.id)}" ${g.id === MODAL.group ? 'selected' : ''}>${esc(nm(g))}</option>`).join('')}</select>
+        </div>
+      </div>
+      <div class="fld"><span>${esc(L.fCols)}</span><div class="checks" id="colChecks"></div>
+        <div class="inline" style="margin-top:5px"><input id="newColName" placeholder="${esc(L.newCol)}" style="flex:1"><button type="button" class="btn" data-act="add-col">+</button></div>
+      </div>
+      <p class="err" id="resErr" hidden></p>
+      <div class="actions"><button type="button" class="btn" data-act="close">${esc(L.cancel)}</button><button class="btn primary" type="submit">${esc(L.save)}</button></div>
+    </form>`);
+  renderTagbox(); renderColChecks();
+}
+function allTagsForForm() { return [...S.data.tags, ...MODAL.newTags]; }
+function renderTagbox(keepFocus) {
+  const L = t();
+  const chips = MODAL.tags.map(id => byId(allTagsForForm(), id)).filter(Boolean)
+    .map(x => `<span class="tag">${esc(nm(x))}<button type="button" data-act="rm-tag" data-id="${esc(x.id)}" aria-label="remove">×</button></span>`).join('');
+  const old = $('#tagInput'); const val = old ? old.value : '';
+  $('#tagbox').innerHTML = chips + `<input id="tagInput" placeholder="${esc(L.tagPh)}" value="${esc(val)}">`;
+  if (keepFocus) $('#tagInput').focus();
+}
+function tagSuggestions(q) {
+  const qn = norm(q).trim();
+  const list = allTagsForForm().filter(x => !MODAL.tags.includes(x.id) && (!qn || norm(x.de + ' ' + (x.en || '')).includes(qn)));
+  const c = collator();
+  list.sort((a, b) => (norm(nm(a)).startsWith(qn) ? 0 : 1) - (norm(nm(b)).startsWith(qn) ? 0 : 1) || c.compare(nm(a), nm(b)));
+  const exact = allTagsForForm().some(x => norm(x.de) === qn || norm(x.en) === qn);
+  return { list: list.slice(0, 12), canCreate: qn && !exact };
+}
+function renderSugg() {
+  const inp = $('#tagInput'), box = $('#sugg');
+  const q = inp ? inp.value : '';
+  if (!q.trim() && document.activeElement !== inp) { box.hidden = true; return; }
+  const { list, canCreate } = tagSuggestions(q);
+  const items = list.map(x => ({ act: 'pick-tag', id: x.id, label: esc(nm(x)) + (byId(S.data.tagGroups, x.group) ? `<span class="grp">${esc(nm(byId(S.data.tagGroups, x.group)))}</span>` : '') }));
+  if (canCreate) items.push({ act: 'create-tag', id: q.trim(), label: esc(t().createTag(q.trim())) });
+  MODAL.hi = Math.min(MODAL.hi, Math.max(items.length - 1, 0));
+  box.innerHTML = items.map((it, i) => `<button type="button" class="${i === MODAL.hi ? 'hi' : ''}" data-act="${it.act}" data-id="${esc(it.id)}">${it.label}</button>`).join('');
+  box.hidden = !items.length;
+}
+function pickTag(id) { if (!MODAL.tags.includes(id)) MODAL.tags.push(id); $('#tagInput').value = ''; MODAL.hi = 0; renderTagbox(true); renderSugg(); }
+function createTag(name) {
+  name = name.trim(); if (!name) return;
+  const taken = new Set(allTagsForForm().map(x => x.id));
+  const id = uniqueId(slug(name), taken);
+  MODAL.newTags.push({ id, group: MODAL.group, de: name, en: '' });
+  pickTag(id);
+}
+function renderColChecks() {
+  const all = [...S.data.collections, ...MODAL.newCols].sort((a, b) => collator().compare(nm(a), nm(b)));
+  $('#colChecks').innerHTML = all.map(x => `<label><input type="checkbox" data-col="${esc(x.id)}" ${MODAL.cols.includes(x.id) ? 'checked' : ''}> ${esc(nm(x))}</label>`).join('') || `<span class="hint" style="margin:0">—</span>`;
+}
+function addCol() {
+  const inp = $('#newColName'), name = inp.value.trim(); if (!name) return;
+  const existing = [...S.data.collections, ...MODAL.newCols].find(x => norm(x.de) === norm(name) || norm(x.en) === norm(name));
+  if (existing) { if (!MODAL.cols.includes(existing.id)) MODAL.cols.push(existing.id); }
+  else {
+    const id = uniqueId(slug(name), new Set([...S.data.collections, ...MODAL.newCols].map(x => x.id)));
+    MODAL.newCols.push({ id, de: name, en: '' }); MODAL.cols.push(id);
+  }
+  inp.value = ''; renderColChecks();
+}
+async function saveRes(form) {
+  const L = t(), fd = new FormData(form), err = $('#resErr');
+  const title = fd.get('title').trim(), url = fd.get('url').trim();
+  err.hidden = true;
+  if (!title) { err.textContent = L.needTitle; err.hidden = false; return; }
+  if (url && !safeUrl(url)) { err.textContent = L.badUrl; err.hidden = false; return; }
+  const typed = $('#tagInput').value.trim();
+  if (typed) { const { list } = tagSuggestions(typed); const ex = allTagsForForm().find(x => norm(x.de) === norm(typed) || norm(x.en) === norm(typed)); if (ex) pickTag(ex.id); else createTag(typed); }
+  const M = MODAL;
+  const old = M.id ? byId(S.data.resources, M.id) : null;
+  const res = {
+    id: M.id || 'r' + Date.now().toString(36),
+    title, url,
+    type: fd.get('type') || '', author: fd.get('author').trim(),
+    year: fd.get('year') ? Number(fd.get('year')) : '',
+    lang: fd.get('lang') || '',
+    descDe: fd.get('descDe').trim(), descEn: fd.get('descEn').trim(),
+    tags: [...M.tags], collections: [...M.cols],
+    fav: fd.get('fav') === 'on',
+    added: old && old.added ? old.added : new Date().toISOString().slice(0, 10),
+  };
+  const newTags = M.newTags.filter(x => res.tags.includes(x.id)), newCols = M.newCols.filter(x => res.collections.includes(x.id));
+  const ok = await ghSave(d => {
+    for (const x of newTags) if (!byId(d.tags, x.id)) d.tags.push(x);
+    for (const x of newCols) if (!byId(d.collections, x.id)) d.collections.push(x);
+    const i = d.resources.findIndex(x => x.id === res.id);
+    if (i >= 0) d.resources[i] = res; else d.resources.push(res);
+  }, `${M.id ? 'bearbeitet' : 'hinzugefügt'}: ${title}`);
+  if (ok) { closeModal(); flash(res.id); }
+}
+function flash(id) {
+  const el = document.getElementById('res-' + id);
+  if (!el) return;
+  el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+}
+
+/* ---------- Verwalten ---------- */
+const MTABS = ['site', 'types', 'languages', 'tagGroups', 'tags', 'collections'];
+function openManage(tab = 'types') {
+  const d = S.data;
+  MODAL = { kind: 'manage', tab, filter: '', draft: structuredClone({ siteName: d.siteName, types: d.types, languages: d.languages, tagGroups: d.tagGroups, tags: d.tags, collections: d.collections }) };
+  MODAL.orig = { siteName: d.siteName };
+  for (const k of MTABS.slice(1)) MODAL.orig[k] = new Set(d[k].map(x => x.id));
+  openModal(`<div id="manageBody"></div>`); $('#modal').classList.add('wide');
+  renderManage();
+}
+function usage(kind, id) {
+  const R = S.data.resources;
+  if (kind === 'types') return R.filter(r => r.type === id).length;
+  if (kind === 'languages') return R.filter(r => r.lang === id).length;
+  if (kind === 'tags') return R.filter(r => r.tags.includes(id)).length;
+  if (kind === 'collections') return R.filter(r => r.collections.includes(id)).length;
+  if (kind === 'tagGroups') return MODAL.draft.tags.filter(x => x.group === id).length;
+  return 0;
+}
+function renderManage() {
+  const L = t(), M = MODAL, D = M.draft;
+  const label = { site: L.mSite, types: L.mTypes, languages: L.mLangs, tagGroups: L.mGroups, tags: L.mTags, collections: L.mCols };
+  let h = `<h2>${esc(L.mTitle)}</h2><div class="tabs">` + MTABS.map(k => `<button type="button" class="${k === M.tab ? 'on' : ''}" data-act="mtab" data-id="${k}">${esc(label[k])}</button>`).join('') + `</div>`;
+  if (M.tab === 'site') {
+    h += `<label class="fld"><span>${esc(L.mSite)}</span><input data-m="siteName" value="${esc(D.siteName)}"></label>`;
+  } else {
+    const isTags = M.tab === 'tags';
+    const items = D[M.tab].map((x, i) => ({ x, i }));
+    const q = norm(M.filter).trim();
+    const shown = isTags ? items.filter(({ x }) => !q || norm(x.de + ' ' + x.en).includes(q)) : items;
+    if (isTags) h += `<input id="mFilter" type="search" placeholder="${esc(L.mFilter)}" value="${esc(M.filter)}" style="width:100%;margin-bottom:8px">`;
+    h += `<div class="mrow ${isTags ? 'withgrp' : ''} mhead"><span>${esc(L.mDe)}</span><span>${esc(L.mEn)}</span>${isTags ? `<span>${esc(L.mGroup)}</span>` : ''}<span class="n">${esc(L.mUsed)}</span><span></span></div><div class="mlist">`;
+    h += shown.map(({ x, i }) => `<div class="mrow ${isTags ? 'withgrp' : ''}">
+        <input data-i="${i}" data-k="de" value="${esc(x.de)}"><input data-i="${i}" data-k="en" value="${esc(x.en || '')}">
+        ${isTags ? `<select data-i="${i}" data-k="group"><option value="">${esc(L.noGroup)}</option>${D.tagGroups.map(g => `<option value="${esc(g.id)}" ${g.id === x.group ? 'selected' : ''}>${esc(g.de || g.en || g.id)}</option>`).join('')}</select>` : ''}
+        <span class="n">${x._new ? '' : usage(M.tab, x.id)}</span>
+        <button type="button" class="del" data-act="mdel" data-id="${i}" title="${esc(L.del)}">×</button></div>`).join('');
+    h += `</div><button type="button" class="btn" data-act="madd" style="margin-top:4px">${esc(L.mAdd)}</button>`;
+  }
+  h += `<p class="err" id="mErr" hidden></p><div class="actions"><button type="button" class="btn" data-act="close">${esc(L.cancel)}</button><button type="button" class="btn primary" data-act="msave">${esc(L.save)}</button></div>`;
+  $('#manageBody').innerHTML = h;
+}
+async function saveManage() {
+  const D = MODAL.draft;
+  // IDs für neue Einträge vergeben, leere Einträge verwerfen
+  for (const k of MTABS.slice(1)) {
+    const taken = new Set(D[k].filter(x => !x._new).map(x => x.id));
+    D[k] = D[k].filter(x => (x.de || '').trim() || (x.en || '').trim()).map(x => {
+      const o = { ...x, de: (x.de || '').trim(), en: (x.en || '').trim() };
+      if (o._new) { const oldId = o.id; o.id = uniqueId(slug(o.de || o.en), taken); if (k === 'tagGroups') D.tags.forEach(tg => { if (tg.group === oldId) tg.group = o.id; }); delete o._new; }
+      if (!o.de) o.de = o.en;
+      return o;
+    });
+  }
+  D.siteName = (D.siteName || '').trim() || 'Fundus';
+  const O = MODAL.orig;
+  const ok = await ghSave(d => {
+    if (D.siteName !== O.siteName) d.siteName = D.siteName;
+    // Einträge, die inzwischen auf einem anderen Gerät hinzugekommen sind, bleiben erhalten
+    for (const k of MTABS.slice(1)) {
+      const mine = new Set(D[k].map(x => x.id));
+      d[k] = D[k].concat(d[k].filter(x => !O[k].has(x.id) && !mine.has(x.id)));
+    }
+    const has = k => new Set(d[k].map(x => x.id));
+    const types = has('types'), langs = has('languages'), groups = has('tagGroups'), tags = has('tags'), cols = has('collections');
+    for (const tg of d.tags) if (tg.group && !groups.has(tg.group)) tg.group = '';
+    for (const r of d.resources) {
+      if (r.type && !types.has(r.type)) r.type = '';
+      if (r.lang && !langs.has(r.lang)) r.lang = '';
+      r.tags = r.tags.filter(x => tags.has(x));
+      r.collections = r.collections.filter(x => cols.has(x));
+    }
+  }, 'Listen verwaltet');
+  if (ok) {
+    const f = S.f, d = S.data;
+    f.types.forEach(id => { if (!byId(d.types, id)) f.types.delete(id); });
+    f.tags.forEach(id => { if (!byId(d.tags, id)) f.tags.delete(id); });
+    f.langs.forEach(id => { if (!byId(d.languages, id)) f.langs.delete(id); });
+    if (f.col && !byId(d.collections, f.col)) f.col = '';
+    closeModal(); render();
+  }
+}
+
+/* ---------- Events ---------- */
+function toggleSet(set, id) { set.has(id) ? set.delete(id) : set.add(id); }
+document.addEventListener('click', async e => {
+  const el = e.target.closest('[data-act]');
+  if (!el) return;
+  const act = el.dataset.act, id = el.dataset.id, f = S.f, d = S.data;
+  switch (act) {
+    case 'type': toggleSet(f.types, id); break;
+    case 'lang': toggleSet(f.langs, id); break;
+    case 'tag': toggleSet(f.tags, id); break;
+    case 'col': f.col = f.col === id ? '' : id; break;
+    case 'author': f.author = f.author === id ? '' : id; break;
+    case 'fav': f.fav = !f.fav; break;
+    case 'clear-q': f.q = ''; $('#q').value = ''; break;
+    case 'reset': Object.assign(f, { q: '', types: new Set(), col: '', langs: new Set(), tags: new Set(), author: '', fav: false }); $('#q').value = ''; break;
+    case 'ui': S.ui = id; localStorage.setItem(LS_UI, id); break;
+    case 'toggle-side': $('#side').classList.toggle('open'); return;
+    case 'random': {
+      const list = filtered(); if (!list.length) return;
+      flash(list[Math.floor(Math.random() * list.length)].id); return;
+    }
+    case 'admin-open': if (S.admin) return; openLogin(); return;
+    case 'logout': logout(); return;
+    case 'close': closeModal(); return;
+    case 'add': openResForm(null); return;
+    case 'edit': openResForm(id); return;
+    case 'del': {
+      const r = byId(d.resources, id); if (!r || !confirm(t().confirmDel(r.title))) return;
+      await ghSave(x => { x.resources = x.resources.filter(y => y.id !== id); }, `gelöscht: ${r.title}`); return;
+    }
+    case 'star': {
+      const r = byId(d.resources, id); if (!r) return;
+      const v = !r.fav;
+      await ghSave(x => { const y = byId(x.resources, id); if (y) y.fav = v; }, `${v ? 'Favorit' : 'kein Favorit'}: ${r.title}`); return;
+    }
+    case 'export': {
+      const blob = new Blob([JSON.stringify(d, null, 2) + '\n'], { type: 'application/json' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = `fundus-backup-${new Date().toISOString().slice(0, 10)}.json`; a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000); return;
+    }
+    case 'manage': openManage(); return;
+    // Formular: Tags & Sammlungen
+    case 'rm-tag': MODAL.tags = MODAL.tags.filter(x => x !== id); renderTagbox(true); return;
+    case 'pick-tag': pickTag(id); return;
+    case 'create-tag': createTag(id); return;
+    case 'add-col': addCol(); return;
+    // Verwalten
+    case 'mtab': MODAL.tab = id; MODAL.filter = ''; renderManage(); return;
+    case 'madd': {
+      const D = MODAL.draft, k = MODAL.tab;
+      D[k].push({ id: '_n' + Math.random().toString(36).slice(2, 8), _new: true, de: '', en: '', ...(k === 'tags' ? { group: MODAL.lastGroup || '' } : {}) });
+      MODAL.filter = ''; renderManage();
+      const inputs = document.querySelectorAll('#manageBody .mlist input[data-k="de"]'); const last = inputs[inputs.length - 1];
+      if (last) { last.focus(); last.scrollIntoView({ block: 'nearest' }); }
+      return;
+    }
+    case 'mdel': {
+      const k = MODAL.tab, i = Number(id), x = MODAL.draft[k][i];
+      const n = x._new ? 0 : usage(k, x.id);
+      if (n && !confirm(k === 'tagGroups' ? t().mGroupInUse(n) : t().mInUse(n))) return;
+      MODAL.draft[k].splice(i, 1);
+      if (k === 'tagGroups') MODAL.draft.tags.forEach(tg => { if (tg.group === x.id) tg.group = ''; });
+      renderManage(); return;
+    }
+    case 'msave': saveManage(); return;
+    default: return;
+  }
+  render();
+});
+
+document.addEventListener('submit', e => {
+  e.preventDefault();
+  if (e.target.id === 'loginForm') doLogin(e.target);
+  if (e.target.id === 'resForm') saveRes(e.target);
+});
+
+document.addEventListener('input', e => {
+  const el = e.target;
+  if (el.id === 'q') { clearTimeout(el._t); el._t = setTimeout(() => { S.f.q = el.value; render(); }, 150); }
+  else if (el.id === 'tagFilter') { S.tagFilter = el.value; applyTagFilter(); }
+  else if (el.id === 'tagInput') { MODAL.hi = 0; renderSugg(); }
+  else if (el.id === 'mFilter') { MODAL.filter = el.value; const pos = el.selectionStart; renderManage(); const n = $('#mFilter'); n.focus(); n.setSelectionRange(pos, pos); }
+  else if (MODAL && MODAL.kind === 'manage') {
+    if (el.dataset.m === 'siteName') MODAL.draft.siteName = el.value;
+    else if (el.dataset.i !== undefined) MODAL.draft[MODAL.tab][Number(el.dataset.i)][el.dataset.k] = el.value;
+  }
+});
+document.addEventListener('change', e => {
+  const el = e.target;
+  if (el.id === 'sort') { S.f.sort = el.value; render(); }
+  else if (el.id === 'newTagGroup') { MODAL.group = el.value; localStorage.setItem(LS_GROUP, el.value); }
+  else if (el.dataset.col !== undefined) { const id = el.dataset.col; MODAL.cols = el.checked ? [...new Set([...MODAL.cols, id])] : MODAL.cols.filter(x => x !== id); }
+  else if (MODAL && MODAL.kind === 'manage' && el.dataset.k === 'group') { MODAL.draft.tags[Number(el.dataset.i)].group = el.value; MODAL.lastGroup = el.value; }
+});
+document.addEventListener('focusin', e => { if (e.target.id === 'tagInput') renderSugg(); });
+document.addEventListener('mousedown', e => { if (e.target.closest('#sugg')) e.preventDefault(); }); // Fokus im Tag-Feld halten
+document.addEventListener('focusout', e => { if (e.target.id === 'tagInput') setTimeout(() => { const s = $('#sugg'); if (s && document.activeElement.id !== 'tagInput') s.hidden = true; }, 120); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && MODAL) { if (e.target.id === 'tagInput' && !$('#sugg').hidden) { $('#sugg').hidden = true; return; } closeModal(); return; }
+  if (e.target.id === 'tagInput') {
+    const btns = [...document.querySelectorAll('#sugg button')];
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault(); if (!btns.length) return;
+      MODAL.hi = (MODAL.hi + (e.key === 'ArrowDown' ? 1 : -1) + btns.length) % btns.length; renderSugg();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const b = btns[MODAL.hi]; if (b && !$('#sugg').hidden) b.click(); else if (e.target.value.trim()) createTag(e.target.value);
+    } else if (e.key === 'Backspace' && !e.target.value && MODAL.tags.length) { MODAL.tags.pop(); renderTagbox(true); }
+    return;
+  }
+  if (e.target.id === 'newColName' && e.key === 'Enter') { e.preventDefault(); addCol(); return; }
+  if (e.key === '/' && !MODAL && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); $('#q').focus(); }
+});
+window.addEventListener('popstate', () => { readUrl(); $('#q').value = S.f.q; render(); });
+
+/* ---------- Start ---------- */
+(async function init() {
+  const saved = localStorage.getItem(LS_UI);
+  S.ui = saved === 'de' || saved === 'en' ? saved : ((navigator.language || 'de').toLowerCase().startsWith('de') ? 'de' : 'en');
+  readUrl(); $('#q').value = S.f.q;
+  renderStatic();
+  const c = adminCfg();
+  if (c.token && c.owner && c.repo) {
+    try { S.data = (await ghLoad(c)).data; S.admin = true; } catch (e) { toast(e.message, true, 6000); }
+  }
+  if (!S.data) {
+    try {
+      const r = await fetch('data.json?v=' + Date.now(), { cache: 'no-store' });
+      if (!r.ok) throw new Error();
+      S.data = normalize(await r.json());
+    } catch (e) {
+      $('#list').innerHTML = `<div class="empty">${esc(t().errLoad)}</div>`; return;
+    }
+  }
+  render();
+})();
+</script>
+</body>
+</html>
