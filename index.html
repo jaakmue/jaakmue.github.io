@@ -98,6 +98,30 @@ details.grp[open] summary::before{content:"▾ "}
 body.admin .res:hover .adm,body.admin .res:focus-within .adm{display:flex}
 .adm button{font-size:0.8571rem;border:1px solid var(--line);border-radius:0.2143rem;padding:1px 0.5rem;background:var(--panel)}
 .adm button:hover{border-color:var(--dim)}
+/* Sammlungen */
+.cols{padding:1rem 14px 1.1rem;border-bottom:1px solid var(--line)}
+.cols h2,.listhead{margin:0 0 .6rem;font-size:.7857rem;text-transform:uppercase;letter-spacing:.8px;color:var(--dim);font-weight:600}
+.colgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));gap:.6rem}
+.colcard{display:flex;flex-direction:column;gap:.3rem;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:.75rem .95rem .8rem;transition:border-color .15s,background .15s}
+.colcard:hover{border-color:var(--dim);background:var(--panel2)}
+.colcard .cn{font:600 1.2rem/1.25 Georgia,"Times New Roman",serif;color:var(--strong)}
+.colcard .cd{color:var(--fg);font-size:.93rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.colcard .cc{color:var(--dim);font-size:.82rem;margin-top:auto;padding-top:.2rem}
+.colhead{padding:1rem 14px 1.1rem;border-bottom:1px solid var(--line)}
+.colhead .back{color:var(--dim);font-size:.9rem;margin-bottom:.5rem}
+.colhead .back:hover{color:var(--strong)}
+.colhead h2{margin:0 0 .3rem;font:600 1.7rem/1.2 Georgia,"Times New Roman",serif;color:var(--strong)}
+.colhead p{margin:0 0 .3rem;max-width:70rem}
+.colhead .cc{color:var(--dim);font-size:.85rem}
+.listhead{padding:.8rem 14px 0;margin:0}
+.mcol{border:1px solid var(--line);border-radius:5px;padding:6px;margin-bottom:6px}
+.mcol .mrow{margin-bottom:4px}
+.mdesc{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding-right:calc(1.8571rem * 3 + 2.4286rem + 24px)}
+.mdesc input{width:100%;min-width:0;font-size:.9rem}
+.mrow.arr{grid-template-columns:1fr 1fr 2.4286rem 1.8571rem 1.8571rem 1.8571rem}
+.mv{color:var(--dim);font-size:1rem}
+.mv:hover{color:var(--strong)}
+.mv:disabled{opacity:.25;cursor:default}
 .empty{padding:2.8571rem 1rem;color:var(--dim)}
 
 footer{display:flex;justify-content:space-between;align-items:center;padding:0.7143rem 1rem;border-top:1px solid var(--line);color:var(--dim);font-size:0.8571rem}
@@ -158,7 +182,10 @@ textarea{resize:vertical;min-height:3.7143rem}
   .res{padding-right:0.7143rem}
   body.admin .res .adm{display:flex;position:static;margin-top:0.2857rem}
   .modal .row,.modal .row3{grid-template-columns:1fr}
-  .mrow,.mrow.withgrp{grid-template-columns:1fr 1fr 1.8571rem}
+  .mrow,.mrow.withgrp,.mrow.arr{grid-template-columns:1fr 1fr 1.8571rem}
+  .mrow .mv,.mrow .n{display:none}
+  .mdesc{grid-template-columns:1fr;padding-right:0}
+  .colgrid{grid-template-columns:1fr 1fr}
   .mrow .n,.mrow select{grid-column:span 1}
 }
 </style>
@@ -184,6 +211,7 @@ textarea{resize:vertical;min-height:3.7143rem}
 <div class="wrap">
   <aside id="side"></aside>
   <main>
+    <div id="colsArea"></div>
     <div class="activebar" id="active"></div>
     <div id="list"></div>
   </main>
@@ -230,7 +258,7 @@ const T = {
     confirmDel: t => `„${t}“ wirklich löschen?`,
     saving: 'Speichere …', saved: 'Gespeichert. Für alle Besucher in ca. 1 Minute sichtbar.',
     mTitle: 'Verwalten', mSite: 'Seitenname', mTypes: 'Typen', mLangs: 'Sprachen', mGroups: 'Tag-Gruppen', mTags: 'Tags', mCols: 'Sammlungen',
-    mDe: 'Deutsch', mEn: 'Englisch (optional)', mGroup: 'Gruppe', mUsed: 'genutzt', mAdd: '+ hinzufügen', mFilter: 'Filtern …',
+    mDe: 'Deutsch', mEn: 'Englisch (optional)', mGroup: 'Gruppe', mUsed: 'genutzt', mDescDe: 'Beschreibung Deutsch (optional)', mDescEn: 'Beschreibung Englisch (optional)', up: 'nach oben', down: 'nach unten', allCols: '← Alle Sammlungen', allRes: 'Alle Ressourcen', mAdd: '+ hinzufügen', mFilter: 'Filtern …',
     mInUse: n => `Wird ${n}× verwendet. Trotzdem löschen? Die Zuordnungen werden entfernt.`,
     mGroupInUse: n => `Diese Gruppe enthält ${n} Tags. Trotzdem löschen? Die Tags bleiben erhalten, nur ohne Gruppe.`,
     errAuth: 'Token ungültig oder abgelaufen.', errNotFound: 'Repository, Branch oder data.json nicht gefunden – oder der Token hat keinen Zugriff darauf.',
@@ -261,7 +289,7 @@ const T = {
     confirmDel: t => `Really delete “${t}”?`,
     saving: 'Saving …', saved: 'Saved. Visible to all visitors in about 1 minute.',
     mTitle: 'Manage', mSite: 'Site name', mTypes: 'Types', mLangs: 'Languages', mGroups: 'Tag groups', mTags: 'Tags', mCols: 'Collections',
-    mDe: 'German', mEn: 'English (optional)', mGroup: 'Group', mUsed: 'used', mAdd: '+ add', mFilter: 'Filter …',
+    mDe: 'German', mEn: 'English (optional)', mGroup: 'Group', mUsed: 'used', mDescDe: 'Description German (optional)', mDescEn: 'Description English (optional)', up: 'move up', down: 'move down', allCols: '← All collections', allRes: 'All resources', mAdd: '+ add', mFilter: 'Filter …',
     mInUse: n => `Used ${n}×. Delete anyway? The assignments will be removed.`,
     mGroupInUse: n => `This group contains ${n} tags. Delete anyway? The tags are kept, just without a group.`,
     errAuth: 'Token invalid or expired.', errNotFound: 'Repository, branch or data.json not found – or the token has no access to it.',
@@ -407,11 +435,6 @@ function renderSide() {
   h += `<div class="sec"><h3>${esc(L.types)}</h3>` + d.types.filter(x => tc.get(x.id) || f.types.has(x.id)).map(x =>
     `<button class="facet ${f.types.has(x.id) ? 'on' : ''}" data-act="type" data-id="${esc(x.id)}"><span>${esc(nm(x))}</span><span class="n">${tc.get(x.id) || 0}</span></button>`).join('') + `</div>`;
 
-  const cc = counts('collections');
-  const cols = sortNm(d.collections).filter(x => cc.get(x.id) || f.col === x.id);
-  if (cols.length) h += `<div class="sec"><h3>${esc(L.collections)}</h3>` + cols.map(x =>
-    `<button class="facet ${f.col === x.id ? 'on' : ''}" data-act="col" data-id="${esc(x.id)}"><span>${esc(nm(x))}</span><span class="n">${cc.get(x.id) || 0}</span></button>`).join('') + `</div>`;
-
   const lc = counts('lang');
   const langs = d.languages.filter(x => lc.get(x.id) || f.langs.has(x.id));
   if (langs.length > 1 || f.langs.size) h += `<div class="sec"><h3>${esc(L.languages)}</h3>` + langs.map(x =>
@@ -449,7 +472,6 @@ function renderActive(n) {
   if (f.q) chip(`${L.search_}: „${f.q}“`, 'clear-q');
   if (f.fav) chip(`★ ${L.fav}`, 'fav');
   f.types.forEach(id => chip(nm(byId(d.types, id)) || id, 'type', id));
-  if (f.col) chip(nm(byId(d.collections, f.col)) || f.col, 'col', f.col);
   f.langs.forEach(id => chip(nm(byId(d.languages, id)) || id, 'lang', id));
   f.tags.forEach(id => chip('#' + (nm(byId(d.tags, id)) || id), 'tag', id));
   if (f.author) chip(`${L.author}: ${f.author}`, 'author', f.author);
@@ -489,10 +511,32 @@ function renderRow(r) {
   </article>`;
 }
 
+function otherFilters() {
+  const f = S.f;
+  return !!(f.q || f.types.size || f.tags.size || f.langs.size || f.author || f.fav);
+}
+function renderCols() {
+  const d = S.data, f = S.f, L = t(), area = $('#colsArea');
+  const cc = counts('collections');
+  const desc = c => (S.ui === 'en' ? (c.descEn || c.descDe) : (c.descDe || c.descEn)) || '';
+  if (f.col) {
+    const c = byId(d.collections, f.col);
+    area.innerHTML = `<div class="colhead"><button class="back" data-act="col" data-id="${esc(f.col)}">${esc(L.allCols)}</button>
+      <h2>${esc(c ? nm(c) : f.col)}</h2>${c && desc(c) ? `<p>${esc(desc(c))}</p>` : ''}
+      <div class="cc">${esc(L.count(cc.get(f.col) || 0))}</div></div>`;
+    return;
+  }
+  const cols = d.collections.filter(c => S.admin || cc.get(c.id));
+  if (otherFilters() || !cols.length) { area.innerHTML = ''; return; }
+  area.innerHTML = `<section class="cols"><h2>${esc(L.collections)}</h2><div class="colgrid">` + cols.map(c =>
+    `<button class="colcard" data-act="col" data-id="${esc(c.id)}"><span class="cn">${esc(nm(c))}</span>${desc(c) ? `<span class="cd">${esc(desc(c))}</span>` : ''}<span class="cc">${esc(L.count(cc.get(c.id) || 0))}</span></button>`).join('') +
+    `</div></section><h2 class="listhead">${esc(L.allRes)}</h2>`;
+}
 function render() {
   if (!S.data) return;
   renderStatic();
   renderSide();
+  renderCols();
   const list = filtered();
   renderActive(list.length);
   $('#list').innerHTML = list.length ? list.map(renderRow).join('') : `<div class="empty">${esc(t().noResults)}</div>`;
@@ -699,7 +743,7 @@ function createTag(name) {
   pickTag(id);
 }
 function renderColChecks() {
-  const all = [...S.data.collections, ...MODAL.newCols].sort((a, b) => collator().compare(nm(a), nm(b)));
+  const all = [...S.data.collections, ...MODAL.newCols];
   $('#colChecks').innerHTML = all.map(x => `<label><input type="checkbox" data-col="${esc(x.id)}" ${MODAL.cols.includes(x.id) ? 'checked' : ''}> ${esc(nm(x))}</label>`).join('') || `<span class="hint" style="margin:0">—</span>`;
 }
 function addCol() {
@@ -780,12 +824,20 @@ function renderManage() {
     const q = norm(M.filter).trim();
     const shown = isTags ? items.filter(({ x }) => !q || norm(x.de + ' ' + x.en).includes(q)) : items;
     if (isTags) h += `<input id="mFilter" type="search" placeholder="${esc(L.mFilter)}" value="${esc(M.filter)}" style="width:100%;margin-bottom:8px">`;
-    h += `<div class="mrow ${isTags ? 'withgrp' : ''} mhead"><span>${esc(L.mDe)}</span><span>${esc(L.mEn)}</span>${isTags ? `<span>${esc(L.mGroup)}</span>` : ''}<span class="n">${esc(L.mUsed)}</span><span></span></div><div class="mlist">`;
-    h += shown.map(({ x, i }) => `<div class="mrow ${isTags ? 'withgrp' : ''}">
+    const isCols = M.tab === 'collections', arr = !isTags;
+    const cls = isTags ? 'withgrp' : 'arr';
+    h += `<div class="mrow ${cls} mhead"><span>${esc(L.mDe)}</span><span>${esc(L.mEn)}</span>${isTags ? `<span>${esc(L.mGroup)}</span>` : ''}<span class="n">${esc(L.mUsed)}</span>${arr ? '<span></span><span></span>' : ''}<span></span></div><div class="mlist">`;
+    const last = D[M.tab].length - 1;
+    h += shown.map(({ x, i }) => {
+      const row = `<div class="mrow ${cls}">
         <input data-i="${i}" data-k="de" value="${esc(x.de)}"><input data-i="${i}" data-k="en" value="${esc(x.en || '')}">
         ${isTags ? `<select data-i="${i}" data-k="group"><option value="">${esc(L.noGroup)}</option>${D.tagGroups.map(g => `<option value="${esc(g.id)}" ${g.id === x.group ? 'selected' : ''}>${esc(g.de || g.en || g.id)}</option>`).join('')}</select>` : ''}
         <span class="n">${x._new ? '' : usage(M.tab, x.id)}</span>
-        <button type="button" class="del" data-act="mdel" data-id="${i}" title="${esc(L.del)}">×</button></div>`).join('');
+        ${arr ? `<button type="button" class="mv" data-act="mup" data-id="${i}" title="${esc(L.up)}" ${i === 0 ? 'disabled' : ''}>↑</button><button type="button" class="mv" data-act="mdown" data-id="${i}" title="${esc(L.down)}" ${i === last ? 'disabled' : ''}>↓</button>` : ''}
+        <button type="button" class="del" data-act="mdel" data-id="${i}" title="${esc(L.del)}">×</button></div>`;
+      if (!isCols) return row;
+      return `<div class="mcol">${row}<div class="mdesc"><input data-i="${i}" data-k="descDe" placeholder="${esc(L.mDescDe)}" value="${esc(x.descDe || '')}"><input data-i="${i}" data-k="descEn" placeholder="${esc(L.mDescEn)}" value="${esc(x.descEn || '')}"></div></div>`;
+    }).join('');
     h += `</div><button type="button" class="btn" data-act="madd" style="margin-top:4px">${esc(L.mAdd)}</button>`;
   }
   h += `<p class="err" id="mErr" hidden></p><div class="actions"><button type="button" class="btn" data-act="close">${esc(L.cancel)}</button><button type="button" class="btn primary" data-act="msave">${esc(L.save)}</button></div>`;
@@ -798,6 +850,7 @@ async function saveManage() {
     const taken = new Set(D[k].filter(x => !x._new).map(x => x.id));
     D[k] = D[k].filter(x => (x.de || '').trim() || (x.en || '').trim()).map(x => {
       const o = { ...x, de: (x.de || '').trim(), en: (x.en || '').trim() };
+      if (k === 'collections') { o.descDe = (x.descDe || '').trim(); o.descEn = (x.descEn || '').trim(); if (!o.descDe) delete o.descDe; if (!o.descEn) delete o.descEn; }
       if (o._new) { const oldId = o.id; o.id = uniqueId(slug(o.de || o.en), taken); if (k === 'tagGroups') D.tags.forEach(tg => { if (tg.group === oldId) tg.group = o.id; }); delete o._new; }
       if (!o.de) o.de = o.en;
       return o;
@@ -842,7 +895,7 @@ document.addEventListener('click', async e => {
     case 'type': toggleSet(f.types, id); break;
     case 'lang': toggleSet(f.langs, id); break;
     case 'tag': toggleSet(f.tags, id); break;
-    case 'col': f.col = f.col === id ? '' : id; break;
+    case 'col': f.col = f.col === id ? '' : id; render(); window.scrollTo({ top: 0 }); return;
     case 'author': f.author = f.author === id ? '' : id; break;
     case 'fav': f.fav = !f.fav; break;
     case 'clear-q': f.q = ''; $('#q').value = ''; break;
@@ -888,6 +941,11 @@ document.addEventListener('click', async e => {
       const inputs = document.querySelectorAll('#manageBody .mlist input[data-k="de"]'); const last = inputs[inputs.length - 1];
       if (last) { last.focus(); last.scrollIntoView({ block: 'nearest' }); }
       return;
+    }
+    case 'mup': case 'mdown': {
+      const A = MODAL.draft[MODAL.tab], i = Number(id), j = act === 'mup' ? i - 1 : i + 1;
+      if (j < 0 || j >= A.length) return;
+      [A[i], A[j]] = [A[j], A[i]]; renderManage(); return;
     }
     case 'mdel': {
       const k = MODAL.tab, i = Number(id), x = MODAL.draft[k][i];
