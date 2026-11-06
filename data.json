@@ -151,6 +151,12 @@
       "de": "Wissenschaftlich",
       "en": "Academic",
       "group": ""
+    },
+    {
+      "id": "marxism",
+      "group": "topics",
+      "de": "Marxism",
+      "en": ""
     }
   ],
   "collections": [],
@@ -378,6 +384,24 @@
         "history",
         "imperialismus",
         "palastina"
+      ],
+      "collections": [],
+      "fav": true,
+      "added": "2026-11-06"
+    },
+    {
+      "id": "rmw5b44qz",
+      "title": "Masses, Elites, and Rebels: The Theory of “Brainwashing”",
+      "url": "https://redsails.org/masses-elites-and-rebels/",
+      "type": "article",
+      "author": "Roderic Day",
+      "year": 2022,
+      "lang": "en",
+      "descDe": "Das Essay ist eine sehr gute marxistische Kritik am Konzept der „Gehirnwäsche“ (\"Brainwashing\") und argumentiert, dass das liberale Konzept eine echte Klassenanalyse verhindert.",
+      "descEn": "The essay is a great Marxist critique of the concept of \"brainwashing,\" arguing that this liberal concept prevents a genuine class analysis.",
+      "tags": [
+        "propaganda",
+        "marxism"
       ],
       "collections": [],
       "fav": true,
