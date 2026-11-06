@@ -175,9 +175,12 @@
     {
       "id": "china-verstehen",
       "de": "China Basics",
-      "en": "Understanding Basics",
-      "descDe": "Medien & Propaganda",
-      "descEn": "Media & Propaganda"
+      "en": "Understanding Basics"
+    },
+    {
+      "id": "medien-propaganda",
+      "de": "Medien & Propaganda",
+      "en": "Media & Propaganda"
     }
   ],
   "resources": [
