@@ -195,7 +195,9 @@
         "economy",
         "sri-lanka"
       ],
-      "collections": [],
+      "collections": [
+        "china-verstehen"
+      ],
       "fav": false,
       "added": "2026-11-06"
     },
