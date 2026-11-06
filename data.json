@@ -111,12 +111,6 @@
       "en": "Socialism"
     },
     {
-      "id": "debt",
-      "group": "topics",
-      "de": "Schulden",
-      "en": "Debt"
-    },
-    {
       "id": "sri-lanka",
       "group": "countries",
       "de": "Sri Lanka 🇱🇰",
@@ -192,7 +186,6 @@
       "tags": [
         "china",
         "geopolitics",
-        "debt",
         "economy",
         "sri-lanka"
       ],
