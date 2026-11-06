@@ -99,12 +99,6 @@
       "en": "History"
     },
     {
-      "id": "media",
-      "group": "topics",
-      "de": "Medien",
-      "en": "Media"
-    },
-    {
       "id": "propaganda",
       "group": "topics",
       "de": "Propaganda",
@@ -236,7 +230,6 @@
       "descDe": "Studie darüber, wie wenige globale Nachrichtenagenturen einen Großteil der internationalen Berichterstattung westlicher Medien liefern, am Beispiel des Syrienkriegs.",
       "descEn": "Study of how a few global news agencies supply much of Western media's international coverage, using the Syrian war as an example.",
       "tags": [
-        "media",
         "propaganda"
       ],
       "collections": [
