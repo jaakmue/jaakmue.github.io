@@ -157,6 +157,18 @@
       "group": "topics",
       "de": "Marxismus",
       "en": "Marxism"
+    },
+    {
+      "id": "ukraine",
+      "group": "countries",
+      "de": "Ukraine",
+      "en": ""
+    },
+    {
+      "id": "russland",
+      "group": "countries",
+      "de": "Russland",
+      "en": ""
     }
   ],
   "collections": [],
@@ -403,6 +415,27 @@
       "tags": [
         "propaganda",
         "marxism"
+      ],
+      "collections": [],
+      "fav": true,
+      "added": "2026-11-06"
+    },
+    {
+      "id": "rmw5c19xf",
+      "title": "The Russia-Ukraine War and its Origins",
+      "url": "https://doi.org/10.1007/978-3-031-98724-3",
+      "type": "book",
+      "author": "Ivan Katchanovski",
+      "year": 2026,
+      "lang": "en",
+      "descDe": "Sehr gutes Buch über den Ukraine-Krieg und seine Ursprünge. Sehr gute empirische Arbeit, leider aus einer liberalen Perspektive.",
+      "descEn": "Great book about the war in Ukraine and its origins. Great empirical work, unfortunately from a liberal perspective.",
+      "tags": [
+        "geopolitics",
+        "propaganda",
+        "imperialismus",
+        "ukraine",
+        "russland"
       ],
       "collections": [],
       "fav": true,
