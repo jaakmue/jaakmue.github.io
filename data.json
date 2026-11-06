@@ -169,6 +169,12 @@
       "group": "countries",
       "de": "Russland 🇷🇺",
       "en": "Russia 🇷🇺"
+    },
+    {
+      "id": "iran",
+      "group": "countries",
+      "de": "Iran 🇮🇷",
+      "en": ""
     }
   ],
   "collections": [],
@@ -450,11 +456,14 @@
       "author": "",
       "year": 2026,
       "lang": "de",
-      "descDe": "Deutscher Artikel dazu, warum Kommunisten nicht darauf hoffen sollten, dass die Agressionen der USA und Israels gegenüber dem Iran zum Fall der Islamischen Republik (Regime Change) führen.",
-      "descEn": "A German article on why communists should not hope that the aggression of the US and Israel toward Iran will lead to the fall of the Islamic Republic (regime change).",
+      "descDe": "Deutscher Artikel dazu, warum Kommunisten nicht darauf hoffen sollten, dass die Agressionen der USA und Israels gegenüber dem Iran zum Fall der Islamischen Republik führen ( = Regime Change).",
+      "descEn": "A German article on why communists should not hope that the aggression of the US and Israel toward Iran will lead to the fall of the Islamic Republic ( = regime change).",
       "tags": [
         "geopolitics",
-        "imperialismus"
+        "imperialismus",
+        "usa",
+        "iran",
+        "marxism"
       ],
       "collections": [],
       "fav": false,
