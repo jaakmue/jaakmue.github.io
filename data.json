@@ -127,6 +127,12 @@
       "de": "Syrien 🇸🇾",
       "en": "Syria 🇸🇾",
       "group": "countries"
+    },
+    {
+      "id": "palastina",
+      "de": "Palästina 🇵🇸",
+      "en": "Palestine 🇵🇸",
+      "group": "countries"
     }
   ],
   "collections": [
