@@ -174,8 +174,10 @@
   "collections": [
     {
       "id": "china-verstehen",
-      "de": "China verstehen",
-      "en": "Understanding China"
+      "de": "China Basics",
+      "en": "Understanding Basics",
+      "descDe": "Medien & Propaganda",
+      "descEn": "Media & Propaganda"
     }
   ],
   "resources": [
