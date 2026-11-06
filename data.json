@@ -284,6 +284,24 @@
       ],
       "fav": false,
       "added": "2026-11-06"
+    },
+    {
+      "id": "rmw58t35t",
+      "title": "Loyal Citizens of Pyongyang in Seoul (서울의 평양 시민들)",
+      "url": "https://youtu.be/b_blPim4r-s",
+      "type": "documentary",
+      "author": "David Yun",
+      "year": 2018,
+      "lang": "en",
+      "descDe": "Doku über das traurige Schicksal von Nordkoreanern in Südkorea.",
+      "descEn": "Documentary about the sad fate of North Koreans in South Korea.",
+      "tags": [
+        "korea",
+        "propaganda"
+      ],
+      "collections": [],
+      "fav": true,
+      "added": "2026-11-06"
     }
   ]
 }
