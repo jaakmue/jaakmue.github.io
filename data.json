@@ -502,6 +502,27 @@
       ],
       "fav": false,
       "added": "2026-11-06"
+    },
+    {
+      "id": "rmw5e35dv",
+      "title": "Qiao Collective",
+      "url": "https://www.qiaocollective.com",
+      "type": "website",
+      "author": "",
+      "year": "",
+      "lang": "en",
+      "descDe": "Kollektiv aus Diaspora-Chinesen, das imperialistische Mythen über China widerlegt. Sehr gute Sammlungen an Ressourcen zu vielen Themen.",
+      "descEn": "Collective of Chinese in the diaspora that debunks imperialist myths about China. Great collections of resources on many topics.",
+      "tags": [
+        "china",
+        "imperialismus",
+        "propaganda"
+      ],
+      "collections": [
+        "china-verstehen"
+      ],
+      "fav": false,
+      "added": "2026-11-06"
     }
   ]
 }
