@@ -147,18 +147,7 @@
       "en": "USSR"
     }
   ],
-  "collections": [
-    {
-      "id": "china",
-      "de": "China verstehen",
-      "en": "Understanding China"
-    },
-    {
-      "id": "marxismus",
-      "de": "Marxismus",
-      "en": "Marxism"
-    }
-  ],
+  "collections": [],
   "resources": [
     {
       "id": "r1",
@@ -177,9 +166,7 @@
         "economy",
         "sri-lanka"
       ],
-      "collections": [
-        "china"
-      ],
+      "collections": [],
       "fav": false,
       "added": "2026-11-06"
     },
@@ -198,10 +185,7 @@
         "socialism",
         "economy"
       ],
-      "collections": [
-        "china",
-        "marxismus"
-      ],
+      "collections": [],
       "fav": false,
       "added": "2026-11-06"
     },
@@ -218,9 +202,7 @@
       "tags": [
         "china"
       ],
-      "collections": [
-        "china"
-      ],
+      "collections": [],
       "fav": false,
       "added": "2026-11-06"
     },
@@ -277,9 +259,7 @@
         "china",
         "socialism"
       ],
-      "collections": [
-        "china"
-      ],
+      "collections": [],
       "fav": false,
       "added": "2026-11-06"
     },
@@ -297,9 +277,7 @@
         "china",
         "socialism"
       ],
-      "collections": [
-        "china"
-      ],
+      "collections": [],
       "fav": false,
       "added": "2026-11-06"
     },
