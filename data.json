@@ -71,14 +71,14 @@
     {
       "id": "korea",
       "group": "countries",
-      "de": "Korea",
-      "en": "Korea"
+      "de": "Korea 🇰🇵",
+      "en": "Korea 🇰🇵"
     },
     {
       "id": "usa",
       "group": "countries",
-      "de": "USA",
-      "en": "USA"
+      "de": "USA 🇺🇸",
+      "en": "USA 🇺🇸"
     },
     {
       "id": "geopolitics",
@@ -125,8 +125,8 @@
     {
       "id": "sri-lanka",
       "group": "countries",
-      "de": "Sri Lanka",
-      "en": "Sri Lanka"
+      "de": "Sri Lanka 🇱🇰",
+      "en": "Sri Lanka 🇱🇰"
     }
   ],
   "collections": [
