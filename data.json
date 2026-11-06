@@ -171,7 +171,13 @@
       "en": "Iran 🇮🇷"
     }
   ],
-  "collections": [],
+  "collections": [
+    {
+      "id": "china-verstehen",
+      "de": "China verstehen",
+      "en": "Understanding China"
+    }
+  ],
   "resources": [
     {
       "id": "r1",
