@@ -148,9 +148,9 @@
       "en": "Understanding China"
     },
     {
-      "id": "media-critique",
-      "de": "Medienkritik",
-      "en": "Media critique"
+      "id": "marxismus",
+      "de": "Marxismus",
+      "en": "Marxism"
     }
   ],
   "resources": [
@@ -252,9 +252,7 @@
         "propaganda",
         "syrien"
       ],
-      "collections": [
-        "media-critique"
-      ],
+      "collections": [],
       "fav": true,
       "added": "2026-11-06"
     },
