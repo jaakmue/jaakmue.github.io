@@ -121,6 +121,12 @@
       "group": "topics",
       "de": "Schulden",
       "en": "Debt"
+    },
+    {
+      "id": "sri-lanka",
+      "group": "countries",
+      "de": "Sri Lanka",
+      "en": ""
     }
   ],
   "collections": [
@@ -144,13 +150,14 @@
       "author": "Deborah Brautigam, Meg Rithmire",
       "year": 2021,
       "lang": "en",
-      "descDe": "Zwei Forscherinnen untersuchen die These der chinesischen „Schuldenfalle“ am Beispiel des Hafens Hambantota in Sri Lanka und halten sie für nicht haltbar.",
-      "descEn": "Two researchers examine the Chinese 'debt trap' narrative using Sri Lanka's Hambantota port as a case study and argue that it does not hold up.",
+      "descDe": "Ein Artikel, der die Vorstellung, dass China andere Länder mittels einer „Schuldenfalle“ unter Druck setzt am Beispiel des Hafens von Hambantota in Sri Lanka widerlegt.",
+      "descEn": "An article that rejects the idea that China coerces other countries with \"debt trap\" using the port of Hambantota in Sri Lanka as a case study.",
       "tags": [
         "china",
         "geopolitics",
         "debt",
-        "economy"
+        "economy",
+        "sri-lanka"
       ],
       "collections": [
         "china"
