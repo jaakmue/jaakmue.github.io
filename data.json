@@ -139,6 +139,12 @@
       "de": "Imperialismus",
       "en": "Imperialism",
       "group": "topics"
+    },
+    {
+      "id": "udssr",
+      "group": "countries",
+      "de": "UdSSR",
+      "en": ""
     }
   ],
   "collections": [
@@ -312,6 +318,28 @@
       ],
       "collections": [],
       "fav": true,
+      "added": "2026-11-06"
+    },
+    {
+      "id": "rmw59s0bq",
+      "title": "Historical Nihilism and the Fall of the USSR",
+      "url": "https://youtu.be/lOBpmOqxFuA",
+      "type": "documentary",
+      "author": "",
+      "year": 2022,
+      "lang": "en",
+      "descDe": "Neuveröffentlichung einer Doku über die ideologischen Gründe für den Fall der UdSSR (historical nihilism). die ursprüngliche Doku wurde von Xi Jinping selbst in Auftrag gegeben.",
+      "descEn": "A new release of a documentary about the ideological reasons behind the collapse of the USSR (\"historical nihilism\"). The original documentary was commissioned by Xi Jinping himself.",
+      "tags": [
+        "china",
+        "udssr",
+        "history",
+        "socialism"
+      ],
+      "collections": [
+        "marxismus"
+      ],
+      "fav": false,
       "added": "2026-11-06"
     }
   ]
