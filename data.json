@@ -1,37 +1,139 @@
 {
-  "siteName": "Fundus",
+  "siteName": "Ressourcensammlung",
   "types": [
-    { "id": "article", "de": "Artikel", "en": "Article" },
-    { "id": "documentary", "de": "Doku", "en": "Documentary" },
-    { "id": "book", "de": "Buch / Literatur", "en": "Book / Literature" },
-    { "id": "video", "de": "Video", "en": "Video" },
-    { "id": "podcast", "de": "Podcast", "en": "Podcast" },
-    { "id": "website", "de": "Website", "en": "Website" },
-    { "id": "post", "de": "Social-Media-Beitrag", "en": "Social media post" }
+    {
+      "id": "article",
+      "de": "Artikel",
+      "en": "Article"
+    },
+    {
+      "id": "documentary",
+      "de": "Doku",
+      "en": "Documentary"
+    },
+    {
+      "id": "book",
+      "de": "Buch / Literatur",
+      "en": "Book / Literature"
+    },
+    {
+      "id": "video",
+      "de": "Video",
+      "en": "Video"
+    },
+    {
+      "id": "podcast",
+      "de": "Podcast",
+      "en": "Podcast"
+    },
+    {
+      "id": "website",
+      "de": "Website",
+      "en": "Website"
+    },
+    {
+      "id": "post",
+      "de": "Social-Media-Beitrag",
+      "en": "Social media post"
+    }
   ],
   "languages": [
-    { "id": "de", "de": "Deutsch", "en": "German" },
-    { "id": "en", "de": "Englisch", "en": "English" }
+    {
+      "id": "de",
+      "de": "Deutsch",
+      "en": "German"
+    },
+    {
+      "id": "en",
+      "de": "Englisch",
+      "en": "English"
+    }
   ],
   "tagGroups": [
-    { "id": "countries", "de": "Länder", "en": "Countries" },
-    { "id": "topics", "de": "Themen", "en": "Topics" }
+    {
+      "id": "countries",
+      "de": "Länder",
+      "en": "Countries"
+    },
+    {
+      "id": "topics",
+      "de": "Themen",
+      "en": "Topics"
+    }
   ],
   "tags": [
-    { "id": "china", "group": "countries", "de": "China", "en": "China" },
-    { "id": "korea", "group": "countries", "de": "Korea", "en": "Korea" },
-    { "id": "usa", "group": "countries", "de": "USA", "en": "USA" },
-    { "id": "geopolitics", "group": "topics", "de": "Geopolitik", "en": "Geopolitics" },
-    { "id": "economy", "group": "topics", "de": "Wirtschaft", "en": "Economics" },
-    { "id": "history", "group": "topics", "de": "Geschichte", "en": "History" },
-    { "id": "media", "group": "topics", "de": "Medien", "en": "Media" },
-    { "id": "propaganda", "group": "topics", "de": "Propaganda", "en": "Propaganda" },
-    { "id": "socialism", "group": "topics", "de": "Sozialismus", "en": "Socialism" },
-    { "id": "debt", "group": "topics", "de": "Schulden", "en": "Debt" }
+    {
+      "id": "china",
+      "group": "countries",
+      "de": "China",
+      "en": "China"
+    },
+    {
+      "id": "korea",
+      "group": "countries",
+      "de": "Korea",
+      "en": "Korea"
+    },
+    {
+      "id": "usa",
+      "group": "countries",
+      "de": "USA",
+      "en": "USA"
+    },
+    {
+      "id": "geopolitics",
+      "group": "topics",
+      "de": "Geopolitik",
+      "en": "Geopolitics"
+    },
+    {
+      "id": "economy",
+      "group": "topics",
+      "de": "Wirtschaft",
+      "en": "Economics"
+    },
+    {
+      "id": "history",
+      "group": "topics",
+      "de": "Geschichte",
+      "en": "History"
+    },
+    {
+      "id": "media",
+      "group": "topics",
+      "de": "Medien",
+      "en": "Media"
+    },
+    {
+      "id": "propaganda",
+      "group": "topics",
+      "de": "Propaganda",
+      "en": "Propaganda"
+    },
+    {
+      "id": "socialism",
+      "group": "topics",
+      "de": "Sozialismus",
+      "en": "Socialism"
+    },
+    {
+      "id": "debt",
+      "group": "topics",
+      "de": "Schulden",
+      "en": "Debt"
+    }
   ],
   "collections": [
-    { "id": "china", "de": "China verstehen", "en": "Understanding China" },
-    { "id": "media-critique", "de": "Medienkritik", "en": "Media critique" }
+    {
+      "id": "china",
+      "de": "China verstehen",
+      "en": "Understanding China"
+    },
+    {
+      "id": "media-critique",
+      "de": "Medienkritik",
+      "en": "Media critique"
+    }
   ],
   "resources": [
     {
@@ -44,8 +146,15 @@
       "lang": "en",
       "descDe": "Zwei Forscherinnen untersuchen die These der chinesischen „Schuldenfalle“ am Beispiel des Hafens Hambantota in Sri Lanka und halten sie für nicht haltbar.",
       "descEn": "Two researchers examine the Chinese 'debt trap' narrative using Sri Lanka's Hambantota port as a case study and argue that it does not hold up.",
-      "tags": ["china", "geopolitics", "debt", "economy"],
-      "collections": ["china"],
+      "tags": [
+        "china",
+        "geopolitics",
+        "debt",
+        "economy"
+      ],
+      "collections": [
+        "china"
+      ],
       "fav": true,
       "added": "2026-11-06"
     },
@@ -59,8 +168,14 @@
       "lang": "en",
       "descDe": "Essay zur Frage, ob Chinas Milliardäre und Marktwirtschaft eine Rückkehr zum Kapitalismus bedeuten, mit Kritik an westlichen Sichtweisen auf China.",
       "descEn": "Essay on whether China's billionaires and market economy mean a return to capitalism, with a critique of Western perspectives on China.",
-      "tags": ["china", "socialism", "economy"],
-      "collections": ["china"],
+      "tags": [
+        "china",
+        "socialism",
+        "economy"
+      ],
+      "collections": [
+        "china"
+      ],
       "fav": false,
       "added": "2026-11-06"
     },
@@ -74,8 +189,12 @@
       "lang": "en",
       "descDe": "Platzhalter: Hier kommt deine Beschreibung des Beitrags hin.",
       "descEn": "Placeholder: your description of this post goes here.",
-      "tags": ["china"],
-      "collections": ["china"],
+      "tags": [
+        "china"
+      ],
+      "collections": [
+        "china"
+      ],
       "fav": false,
       "added": "2026-11-06"
     },
@@ -89,7 +208,12 @@
       "lang": "en",
       "descDe": "Buch über die Geschichte Koreas im 20. Jahrhundert aus der Perspektive des Kampfes um Unabhängigkeit gegen fremde Mächte.",
       "descEn": "Book on 20th-century Korean history, told from the perspective of the struggle for independence from foreign powers.",
-      "tags": ["korea", "usa", "history", "geopolitics"],
+      "tags": [
+        "korea",
+        "usa",
+        "history",
+        "geopolitics"
+      ],
       "collections": [],
       "fav": true,
       "added": "2026-11-06"
@@ -104,8 +228,13 @@
       "lang": "en",
       "descDe": "Studie darüber, wie wenige globale Nachrichtenagenturen einen Großteil der internationalen Berichterstattung westlicher Medien liefern, am Beispiel des Syrienkriegs.",
       "descEn": "Study of how a few global news agencies supply much of Western media's international coverage, using the Syrian war as an example.",
-      "tags": ["media", "propaganda"],
-      "collections": ["media-critique"],
+      "tags": [
+        "media",
+        "propaganda"
+      ],
+      "collections": [
+        "media-critique"
+      ],
       "fav": false,
       "added": "2026-11-06"
     }
