@@ -145,6 +145,12 @@
       "group": "countries",
       "de": "UdSSR",
       "en": "USSR"
+    },
+    {
+      "id": "wissenschaftlich",
+      "de": "Wissenschaftlich",
+      "en": "Academic",
+      "group": ""
     }
   ],
   "collections": [],
