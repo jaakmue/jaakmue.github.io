@@ -178,9 +178,6 @@
       "en": "China Basics",
       "layout": [
         {
-          "r": "rmw5e35dv"
-        },
-        {
           "f": "fmwb5bzqzfng",
           "de": "Sozialismus chinesischer Prägung",
           "en": "Socialism with Chinese characteristics",
@@ -209,6 +206,9 @@
             "rmw5efop6",
             "rmwb5964n"
           ]
+        },
+        {
+          "r": "rmw5e35dv"
         }
       ]
     },
