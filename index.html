@@ -47,6 +47,8 @@ input:focus,select:focus,textarea:focus{border-color:var(--dim)}
 
 /* Layout */
 .wrap{display:grid;grid-template-columns:17.8571rem 1fr;min-height:calc(100vh - var(--hdr) - 2.8571rem)}
+body:not(.v-all) .wrap{grid-template-columns:1fr}
+body:not(.v-all) aside{display:none}
 aside{position:sticky;top:var(--hdr);align-self:start;max-height:calc(100vh - var(--hdr));overflow:auto;padding:0.7143rem 0.7143rem 2.1429rem 1rem;border-right:1px solid var(--line);scrollbar-width:thin}
 main{min-width:0;padding:0 0 2.1429rem}
 .sec{margin-bottom:0.8571rem}
@@ -68,64 +70,88 @@ details.grp[open] summary::before{content:"▾ "}
 #tagFilter{width:100%;font-size:0.8571rem;padding:0.2143rem 0.5rem;margin-bottom:0.2857rem}
 
 /* Active filters */
-.activebar{display:flex;flex-wrap:wrap;align-items:center;gap:0.3571rem;padding:0.5rem 1rem;border-bottom:1px solid var(--line);font-size:0.8571rem;color:var(--dim)}
+.activebar{display:flex;flex-wrap:wrap;align-items:center;gap:0.3571rem;padding:0.7rem 1rem 0.4rem;font-size:0.8571rem;color:var(--dim)}
+.activebar .tools{margin-left:auto;display:flex;gap:.4rem;align-items:center}
+.activebar select,.activebar .btn{font-size:.85rem;padding:.2rem .5rem}
 .activebar .chip{border:1px solid var(--line);border-radius:0.2143rem;padding:0 0.2857rem 0 0.5rem;color:var(--fg);display:inline-flex;align-items:center;gap:0.2857rem;line-height:1.4286rem}
 .activebar .chip button{color:var(--dim);padding:0 0.2143rem}
 .activebar .chip button:hover{color:var(--strong)}
 .linkbtn{color:var(--dim);text-decoration:underline;text-underline-offset:0.1429rem}
 .linkbtn:hover{color:var(--strong)}
 
-/* Resource rows */
-.res{position:relative;padding:.55rem 1rem .6rem 2.6rem;border-bottom:1px solid var(--line)}
+/* Resource rows (ohne Trennlinien) */
+.res{position:relative;padding:.6rem 1rem .7rem 2.6rem;border-radius:.4rem}
 .res:hover{background:#212326}
 .res.flash{animation:flash 1.6s ease}
 @keyframes flash{0%,40%{background:#3a3236}100%{background:transparent}}
-.res .st{position:absolute;left:.85rem;top:.55rem;width:1.3rem;text-align:center;font-size:1.071rem;line-height:1.45;color:var(--star)}
+.res .st{position:absolute;left:.85rem;top:.6rem;width:1.3rem;text-align:center;font-size:1.071rem;line-height:1.45;color:var(--star)}
 .res .st.off{color:#4a4d52}
 .res .st.click:hover{color:var(--star)}
 .res .head{display:flex;flex-wrap:wrap;align-items:baseline;gap:0.1429rem 0.7143rem}
 .res .title{font-weight:600;color:var(--strong);font-size:1.071rem}
 .res a.title,.res a.title:visited{color:var(--strong)}
-.res .ext{font-size:0.7857rem;color:var(--dim);margin-left:0.2143rem}
 .res .meta{color:var(--dim);font-size:0.8929rem}
 .res .meta button:hover{text-decoration:underline;text-underline-offset:0.1429rem;color:var(--fg)}
-.res .desc{margin:0.1429rem 0 0.2857rem}
+.res .desc{margin:0.15rem 0 0.35rem}
 .res .fallback{color:var(--dim);font-size:0.7857rem;margin-left:0.2857rem}
 .res .foot{display:flex;flex-wrap:wrap;gap:0.2857rem;align-items:center}
 .res .col{font-size:0.8571rem;color:var(--dim);margin-left:0.2857rem}
 .res .col:hover{color:var(--fg);text-decoration:underline;text-underline-offset:0.1429rem}
-.res .adm{position:absolute;right:0.7143rem;top:0.5rem;display:none;gap:0.2857rem}
+.res .adm{position:absolute;right:0.7143rem;top:0.55rem;display:none;gap:0.2857rem}
 body.admin .res:hover .adm,body.admin .res:focus-within .adm{display:flex}
 .adm button{font-size:0.8571rem;border:1px solid var(--line);border-radius:0.2143rem;padding:1px 0.5rem;background:var(--panel)}
 .adm button:hover{border-color:var(--dim)}
-/* Sammlungen */
-.cols{padding:1rem 14px 1.1rem;border-bottom:1px solid var(--line)}
-.cols h2,.listhead{margin:0 0 .6rem;font-size:.7857rem;text-transform:uppercase;letter-spacing:.8px;color:var(--dim);font-weight:600}
-.colgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));gap:.6rem}
-.colcard{display:flex;flex-direction:column;gap:.3rem;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:.75rem .95rem .8rem;transition:border-color .15s,background .15s}
-.colcard:hover{border-color:var(--dim);background:var(--panel2)}
-.colcard .cn{font:600 1.2rem/1.25 Georgia,"Times New Roman",serif;color:var(--strong)}
-.colcard .cd{color:var(--fg);font-size:.93rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.colcard .cc{color:var(--dim);font-size:.82rem;margin-top:auto;padding-top:.2rem}
-.colhead{padding:1rem 14px 1.1rem;border-bottom:1px solid var(--line)}
-.colhead .back{color:var(--dim);font-size:.9rem;margin-bottom:.5rem}
+/* Kuratierte Seiten */
+.page{max-width:68rem;margin:0 auto;padding:2.4rem 1.5rem 3rem}
+.page .res{padding:.95rem 1rem 1rem 2.6rem}
+.page .res .st{top:.95rem}
+.page .res .title{font-size:1.15rem}
+.page .res .desc{font-size:1.02rem;margin:.25rem 0 .5rem}
+.sect + .sect{margin-top:3rem}
+.sect>h2{margin:0 0 1rem;font:600 1.45rem/1.2 Georgia,"Times New Roman",serif;color:var(--strong)}
+.sect>.list{margin:0 -1rem}
+.colgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(18rem,1fr));gap:.9rem}
+.colcard{display:flex;flex-direction:column;gap:.4rem;text-align:left;background:var(--panel);border:1px solid transparent;border-radius:.6rem;padding:1.1rem 1.25rem 1.05rem;transition:border-color .15s,background .15s}
+.colcard:hover{border-color:var(--line);background:var(--panel2)}
+.colcard .cn{font:600 1.35rem/1.25 Georgia,"Times New Roman",serif;color:var(--strong)}
+.colcard .cd{color:var(--fg);font-size:.95rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.colcard .cc{color:var(--dim);font-size:.82rem;margin-top:auto;padding-top:.35rem}
+.alllink{display:inline-block;margin-top:3rem;padding:.75rem 1.15rem;border:1px solid var(--line);border-radius:.5rem;color:var(--strong)}
+.alllink:hover{border-color:var(--dim);background:var(--panel)}
+.colhead{margin-bottom:1.8rem}
+.colhead .back{color:var(--dim);font-size:.92rem;margin-bottom:1.2rem}
 .colhead .back:hover{color:var(--strong)}
-.colhead h2{margin:0 0 .3rem;font:600 1.7rem/1.2 Georgia,"Times New Roman",serif;color:var(--strong)}
-.colhead p{margin:0 0 .3rem;max-width:70rem}
-.colhead .cc{color:var(--dim);font-size:.85rem}
-.listhead{padding:.8rem 14px 0;margin:0}
-.mcol{border:1px solid var(--line);border-radius:5px;padding:6px;margin-bottom:6px}
-.mcol .mrow{margin-bottom:4px}
-.mdesc{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding-right:calc(1.8571rem * 3 + 2.4286rem + 24px)}
-.mdesc input{width:100%;min-width:0;font-size:.9rem}
-.mrow.arr{grid-template-columns:1fr 1fr 2.4286rem 1.8571rem 1.8571rem 1.8571rem}
-.mv{color:var(--dim);font-size:1rem}
-.mv:hover{color:var(--strong)}
-.mv:disabled{opacity:.25;cursor:default}
+.colhead h2{margin:0 0 .5rem;font:600 2.1rem/1.15 Georgia,"Times New Roman",serif;color:var(--strong)}
+.colhead p{margin:0 0 .5rem;font-size:1.08rem;max-width:52rem}
+.colhead .cc{color:var(--dim);font-size:.88rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.colitems{margin:0 -1rem}
+details.folder{margin:.5rem 0;border-radius:.6rem;background:var(--panel)}
+details.folder summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:.6rem;padding:.85rem 1.1rem;border-radius:.6rem}
+details.folder summary::-webkit-details-marker{display:none}
+details.folder summary:hover{background:var(--panel2)}
+details.folder .fi{display:inline-block;width:1rem;color:var(--dim);transition:transform .15s}
+details.folder[open] .fi{transform:rotate(90deg)}
+details.folder .fn{font:600 1.2rem/1.25 Georgia,"Times New Roman",serif;color:var(--strong)}
+details.folder .n{color:var(--dim);font-size:.85rem}
+details.folder .fbody{padding:.1rem 0 .5rem}
+details.folder .res:hover{background:var(--panel2)}
+/* Sammlung anordnen */
+.arr-list{max-height:60vh;overflow:auto;padding-right:.3rem}
+.ai{display:grid;grid-template-columns:1fr 11rem 1.8rem 1.8rem;gap:.4rem;align-items:center;padding:.3rem .5rem;border-radius:.3rem;background:var(--panel2);margin-bottom:.3rem}
+.ai .tt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ai select{width:100%;min-width:0;padding:.15rem .4rem;font-size:.88rem}
+.arr-folder{border:1px solid var(--line);border-radius:.5rem;padding:.45rem;margin-bottom:.45rem}
+.arr-folder .fh{display:grid;grid-template-columns:1.3rem 1fr 1fr 1.8rem 1.8rem 1.8rem;gap:.4rem;align-items:center;margin-bottom:.35rem}
+.arr-folder .fh input{width:100%;min-width:0}
+.arr-folder .ai{margin-left:1.4rem;background:#25272b}
+.arr-folder .none{margin-left:1.4rem;color:var(--dim);font-size:.85rem;padding:.2rem .5rem}
 .empty{padding:2.8571rem 1rem;color:var(--dim)}
 
 footer{display:flex;justify-content:space-between;align-items:center;padding:0.7143rem 1rem;border-top:1px solid var(--line);color:var(--dim);font-size:0.8571rem}
 .lock{color:#4f5257;padding:0.1429rem}
+.navbtn{color:var(--dim);white-space:nowrap;padding:.3rem .2rem}
+.navbtn:hover,.navbtn.on{color:var(--strong)}
+.brand h1{cursor:pointer}
 .lock:hover{color:var(--fg)}
 
 /* Modal */
@@ -179,27 +205,29 @@ textarea{resize:vertical;min-height:3.7143rem}
   .wrap{grid-template-columns:1fr}
   aside{display:none;position:static;max-height:none;border-right:0;border-bottom:1px solid var(--line)}
   aside.open{display:block}
-  .res{padding-right:0.7143rem}
+  .res,.page .res{padding-right:0.7143rem}
+  .page{padding:1.4rem .9rem 2rem}
+  .colgrid{grid-template-columns:1fr}
+  .ai{grid-template-columns:1fr 8rem 1.6rem 1.6rem}
+  .arr-folder .fh{grid-template-columns:1.1rem 1fr 1.6rem 1.6rem 1.6rem}
+  .arr-folder .fh input[data-k=en]{display:none}
   body.admin .res .adm{display:flex;position:static;margin-top:0.2857rem}
   .modal .row,.modal .row3{grid-template-columns:1fr}
   .mrow,.mrow.withgrp,.mrow.arr{grid-template-columns:1fr 1fr 1.8571rem}
   .mrow .mv,.mrow .n{display:none}
   .mdesc{grid-template-columns:1fr;padding-right:0}
-  .colgrid{grid-template-columns:1fr 1fr}
   .mrow .n,.mrow select{grid-column:span 1}
 }
 </style>
 </head>
 <body>
 <header class="top">
-  <div class="brand"><h1 id="siteName">Fundus</h1><span class="count" id="count"></span></div>
+  <div class="brand"><h1 id="siteName" data-act="home" role="link" tabindex="0">Fundus</h1></div>
   <input id="q" type="search" autocomplete="off">
-  <select id="sort" class="hide-m" aria-label="Sort"></select>
-  <button class="btn hide-m" data-act="random" id="randomBtn"></button>
+  <button class="navbtn" data-act="archive" id="archiveBtn"></button>
   <div class="langsw" role="group" aria-label="Language">
     <button data-act="ui" data-id="de">DE</button><button data-act="ui" data-id="en">EN</button>
   </div>
-  <button class="btn only-mobile" data-act="toggle-side" id="sideBtn"></button>
 </header>
 <div class="adminbar" id="adminbar" hidden>
   <span class="who" id="adminWho"></span>
@@ -211,9 +239,11 @@ textarea{resize:vertical;min-height:3.7143rem}
 <div class="wrap">
   <aside id="side"></aside>
   <main>
-    <div id="colsArea"></div>
-    <div class="activebar" id="active"></div>
-    <div id="list"></div>
+    <div id="page"></div>
+    <div id="archive">
+      <div class="activebar" id="active"></div>
+      <div id="list"></div>
+    </div>
   </main>
 </div>
 <footer>
@@ -258,7 +288,7 @@ const T = {
     confirmDel: t => `„${t}“ wirklich löschen?`,
     saving: 'Speichere …', saved: 'Gespeichert. Für alle Besucher in ca. 1 Minute sichtbar.',
     mTitle: 'Verwalten', mSite: 'Seitenname', mTypes: 'Typen', mLangs: 'Sprachen', mGroups: 'Tag-Gruppen', mTags: 'Tags', mCols: 'Sammlungen',
-    mDe: 'Deutsch', mEn: 'Englisch (optional)', mGroup: 'Gruppe', mUsed: 'genutzt', mDescDe: 'Beschreibung Deutsch (optional)', mDescEn: 'Beschreibung Englisch (optional)', up: 'nach oben', down: 'nach unten', allCols: '← Alle Sammlungen', allRes: 'Alle Ressourcen', mAdd: '+ hinzufügen', mFilter: 'Filtern …',
+    mDe: 'Deutsch', mEn: 'Englisch (optional)', mGroup: 'Gruppe', mUsed: 'genutzt', mDescDe: 'Beschreibung Deutsch (optional)', mDescEn: 'Beschreibung Englisch (optional)', up: 'nach oben', down: 'nach unten', allCols: '← Startseite', allRes: 'Alle Ressourcen', recs: 'Empfehlungen', browseAll: n => `Alle ${n} Ressourcen durchsuchen →`, arrange: 'Sammlung anordnen', arrHint: 'Mit ↑↓ verschieben. Im Auswahlfeld legst du fest, ob eine Ressource einzeln steht oder in einem Ordner liegt.', single: '— einzeln —', newFolder: '+ Neuer Ordner', folderDe: 'Ordnername', folderEn: 'Englisch (optional)', folderDefault: 'Ordner', unfold: 'Ordner auflösen (Ressourcen bleiben erhalten)', emptyFolder: 'leer', emptyCol: 'Diese Sammlung ist noch leer.', mAdd: '+ hinzufügen', mFilter: 'Filtern …',
     mInUse: n => `Wird ${n}× verwendet. Trotzdem löschen? Die Zuordnungen werden entfernt.`,
     mGroupInUse: n => `Diese Gruppe enthält ${n} Tags. Trotzdem löschen? Die Tags bleiben erhalten, nur ohne Gruppe.`,
     errAuth: 'Token ungültig oder abgelaufen.', errNotFound: 'Repository, Branch oder data.json nicht gefunden – oder der Token hat keinen Zugriff darauf.',
@@ -289,7 +319,7 @@ const T = {
     confirmDel: t => `Really delete “${t}”?`,
     saving: 'Saving …', saved: 'Saved. Visible to all visitors in about 1 minute.',
     mTitle: 'Manage', mSite: 'Site name', mTypes: 'Types', mLangs: 'Languages', mGroups: 'Tag groups', mTags: 'Tags', mCols: 'Collections',
-    mDe: 'German', mEn: 'English (optional)', mGroup: 'Group', mUsed: 'used', mDescDe: 'Description German (optional)', mDescEn: 'Description English (optional)', up: 'move up', down: 'move down', allCols: '← All collections', allRes: 'All resources', mAdd: '+ add', mFilter: 'Filter …',
+    mDe: 'German', mEn: 'English (optional)', mGroup: 'Group', mUsed: 'used', mDescDe: 'Description German (optional)', mDescEn: 'Description English (optional)', up: 'move up', down: 'move down', allCols: '← Home', allRes: 'All resources', recs: 'Recommendations', browseAll: n => `Browse all ${n} resources →`, arrange: 'Arrange collection', arrHint: 'Move with ↑↓. Use the dropdown to choose whether a resource stands alone or sits in a folder.', single: '— standalone —', newFolder: '+ New folder', folderDe: 'Folder name (German)', folderEn: 'English (optional)', folderDefault: 'Folder', unfold: 'Dissolve folder (resources are kept)', emptyFolder: 'empty', emptyCol: 'This collection is still empty.', mAdd: '+ add', mFilter: 'Filter …',
     mInUse: n => `Used ${n}×. Delete anyway? The assignments will be removed.`,
     mGroupInUse: n => `This group contains ${n} tags. Delete anyway? The tags are kept, just without a group.`,
     errAuth: 'Token invalid or expired.', errNotFound: 'Repository, branch or data.json not found – or the token has no access to it.',
@@ -307,6 +337,9 @@ const S = {
   f: { q: '', types: new Set(), col: '', langs: new Set(), tags: new Set(), author: '', fav: false, sort: 'added' },
   tagFilter: '',
   busy: false,
+  view: 'home',        // 'home' | 'all' (Archiv); Sammlung über f.col
+  openFolders: new Set(),
+  lastKey: null,
 };
 const LS_UI = 'fundus-ui', LS_ADMIN = 'fundus-admin', SS_TOKEN = 'fundus-token', LS_GROUP = 'fundus-lastgroup';
 
@@ -348,7 +381,10 @@ function readUrl() {
   f.author = p.get('author') || '';
   f.fav = p.get('fav') === '1';
   f.sort = T.de.sort[p.get('sort')] ? p.get('sort') : 'added';
+  S.view = p.get('view') === 'all' ? 'all' : 'home';
 }
+function currentView() { return S.f.col ? 'col' : (S.view === 'all' || otherFilters()) ? 'all' : 'home'; }
+function viewKey() { const v = currentView(); return v === 'col' ? 'col:' + S.f.col : v; }
 function writeUrl() {
   const f = S.f, p = new URLSearchParams();
   if (f.q) p.set('q', f.q);
@@ -359,8 +395,14 @@ function writeUrl() {
   if (f.author) p.set('author', f.author);
   if (f.fav) p.set('fav', '1');
   if (f.sort !== 'added') p.set('sort', f.sort);
+  if (currentView() === 'all' && !otherFilters()) p.set('view', 'all');
   const qs = p.toString().replace(/%2C/g, ',');
-  try { history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash); } catch (e) { }
+  const url = location.pathname + (qs ? '?' + qs : '') + location.hash, key = viewKey();
+  try {
+    if (S.lastKey !== null && key !== S.lastKey) history.pushState(null, '', url); // neue Ansicht → Zurück-Taste funktioniert
+    else history.replaceState(null, '', url);
+  } catch (e) { }
+  S.lastKey = key;
 }
 
 /* ---------- Filtering ---------- */
@@ -377,7 +419,6 @@ function filtered() {
   let list = d.resources.filter(r => {
     if (f.fav && !r.fav) return false;
     if (f.types.size && !f.types.has(r.type)) return false;
-    if (f.col && !r.collections.includes(f.col)) return false;
     if (f.langs.size && !f.langs.has(r.lang)) return false;
     for (const tg of f.tags) if (!r.tags.includes(tg)) return false;
     if (f.author && !splitAuthors(r.author).some(a => norm(a) === norm(f.author))) return false;
@@ -410,10 +451,8 @@ function renderStatic() {
   document.title = S.data ? S.data.siteName : 'Fundus';
   $('#siteName').textContent = $('#footName').textContent = S.data ? S.data.siteName : 'Fundus';
   $('#q').placeholder = L.search;
-  $('#sort').innerHTML = Object.entries(L.sort).map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join('');
-  $('#sort').value = S.f.sort;
-  $('#randomBtn').textContent = '⚄ ' + L.random;
-  $('#sideBtn').textContent = L.filters;
+  $('#archiveBtn').textContent = L.allRes;
+  $('#archiveBtn').classList.toggle('on', S.data && currentView() === 'all');
   document.querySelectorAll('.langsw button').forEach(b => b.classList.toggle('on', b.dataset.id === S.ui));
   $('#adminbar').hidden = !S.admin;
   document.body.classList.toggle('admin', S.admin);
@@ -476,12 +515,14 @@ function renderActive(n) {
   f.tags.forEach(id => chip('#' + (nm(byId(d.tags, id)) || id), 'tag', id));
   if (f.author) chip(`${L.author}: ${f.author}`, 'author', f.author);
   const total = d.resources.length;
+  const tools = `<span class="tools"><button class="btn only-mobile" data-act="toggle-side">${esc(L.filters)}</button>
+    <select id="sort" aria-label="Sort">${Object.entries(L.sort).map(([k, v]) => `<option value="${k}" ${k === f.sort ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select>
+    <button class="btn" data-act="random">⚄ ${esc(L.random)}</button></span>`;
   $('#active').innerHTML = `<span>${esc(n === total ? L.count(total) : L.shown(n, total))}</span>` +
-    (chips.length ? ' · ' + chips.join('') + ` <button class="linkbtn" data-act="reset">${esc(L.reset)}</button>` : '');
-  $('#count').textContent = L.count(total);
+    (chips.length ? ' · ' + chips.join('') + ` <button class="linkbtn" data-act="reset">${esc(L.reset)}</button>` : '') + tools;
 }
 
-function renderRow(r) {
+function renderRow(r, ctxCol) {
   const d = S.data, L = t();
   const url = safeUrl(r.url);
   const type = byId(d.types, r.type), lang = byId(d.languages, r.lang);
@@ -490,18 +531,18 @@ function renderRow(r) {
   const authors = splitAuthors(r.author);
   if (authors.length) meta.push(authors.map(a => `<button data-act="author" data-id="${esc(a)}">${esc(a)}</button>`).join(', '));
   if (r.year) meta.push(esc(r.year));
-  if (lang) meta.push(esc(nm(lang)));
+  if (lang && lang.id !== S.ui) meta.push(esc(nm(lang))); // Sprache nur, wenn sie von der Anzeigesprache abweicht
   let desc = S.ui === 'en' ? r.descEn : r.descDe, fb = '';
   if (!desc) { desc = S.ui === 'en' ? r.descDe : r.descEn; if (desc) fb = `<span class="fallback">${L.fallbackNote}</span>`; }
   const tags = r.tags.map(id => byId(d.tags, id)).filter(Boolean)
     .map(x => `<button class="tag ${S.f.tags.has(x.id) ? 'on' : ''}" data-act="tag" data-id="${esc(x.id)}">${esc(nm(x))}</button>`).join('');
-  const cols = r.collections.map(id => byId(d.collections, id)).filter(Boolean)
+  const cols = r.collections.filter(id => id !== ctxCol).map(id => byId(d.collections, id)).filter(Boolean)
     .map(x => `<button class="col" data-act="col" data-id="${esc(x.id)}">▸ ${esc(nm(x))}</button>`).join('');
   const star = S.admin
     ? `<button class="st click ${r.fav ? '' : 'off'}" data-act="star" data-id="${esc(r.id)}" title="${esc(L.fFav)}">${r.fav ? '★' : '☆'}</button>`
     : (r.fav ? `<span class="st" title="${esc(L.fFav)}">★</span>` : '');
   const title = url
-    ? `<a class="title" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(r.title)}</a><span class="ext">↗</span>`
+    ? `<a class="title" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(r.title)}</a>`
     : `<span class="title">${esc(r.title)}</span>`;
   return `<article class="res" id="res-${esc(r.id)}">${star}
     <div class="head"><span>${title}</span><span class="meta">${meta.join(' · ')}</span></div>
@@ -515,31 +556,76 @@ function otherFilters() {
   const f = S.f;
   return !!(f.q || f.types.size || f.tags.size || f.langs.size || f.author || f.fav);
 }
-function renderCols() {
-  const d = S.data, f = S.f, L = t(), area = $('#colsArea');
-  const cc = counts('collections');
-  const desc = c => (S.ui === 'en' ? (c.descEn || c.descDe) : (c.descDe || c.descEn)) || '';
-  if (f.col) {
-    const c = byId(d.collections, f.col);
-    area.innerHTML = `<div class="colhead"><button class="back" data-act="col" data-id="${esc(f.col)}">${esc(L.allCols)}</button>
-      <h2>${esc(c ? nm(c) : f.col)}</h2>${c && desc(c) ? `<p>${esc(desc(c))}</p>` : ''}
-      <div class="cc">${esc(L.count(cc.get(f.col) || 0))}</div></div>`;
-    return;
+const byAdded = (a, b) => String(b.added || '').localeCompare(String(a.added || '')) || String(b.id).localeCompare(String(a.id));
+const colDesc = c => (S.ui === 'en' ? (c.descEn || c.descDe) : (c.descDe || c.descEn)) || '';
+const folderName = f => (S.ui === 'en' ? (f.en || f.de) : (f.de || f.en)) || t().folderDefault;
+
+/* Reihenfolge einer Sammlung: gespeichertes Layout (Ressourcen und Ordner gemischt),
+   bereinigt; Ressourcen, die noch keinen Platz haben, kommen ans Ende. */
+function colLayout(c) {
+  const members = S.data.resources.filter(r => r.collections.includes(c.id));
+  const mem = new Set(members.map(r => r.id)), used = new Set(), out = [];
+  for (const e of (Array.isArray(c.layout) ? c.layout : [])) {
+    if (e && e.f) {
+      const items = (Array.isArray(e.items) ? e.items : []).filter(id => mem.has(id) && !used.has(id));
+      items.forEach(id => used.add(id));
+      out.push({ f: e.f, de: e.de || '', en: e.en || '', items });
+    } else if (e && e.r && mem.has(e.r) && !used.has(e.r)) { used.add(e.r); out.push({ r: e.r }); }
   }
-  const cols = d.collections.filter(c => S.admin || cc.get(c.id));
-  if (otherFilters() || !cols.length) { area.innerHTML = ''; return; }
-  area.innerHTML = `<section class="cols"><h2>${esc(L.collections)}</h2><div class="colgrid">` + cols.map(c =>
-    `<button class="colcard" data-act="col" data-id="${esc(c.id)}"><span class="cn">${esc(nm(c))}</span>${desc(c) ? `<span class="cd">${esc(desc(c))}</span>` : ''}<span class="cc">${esc(L.count(cc.get(c.id) || 0))}</span></button>`).join('') +
-    `</div></section><h2 class="listhead">${esc(L.allRes)}</h2>`;
+  const rest = members.filter(r => !used.has(r.id));
+  if (!out.length) rest.sort(byAdded);
+  for (const r of rest) out.push({ r: r.id });
+  return out;
 }
+
+function renderHome() {
+  const d = S.data, L = t(), cc = counts('collections');
+  const cols = d.collections.filter(c => S.admin || cc.get(c.id));
+  const favs = d.resources.filter(r => r.fav).sort(byAdded);
+  let h = '';
+  if (cols.length) h += `<section class="sect"><h2>${esc(L.collections)}</h2><div class="colgrid">` + cols.map(c =>
+    `<button class="colcard" data-act="col" data-id="${esc(c.id)}"><span class="cn">${esc(nm(c))}</span>${colDesc(c) ? `<span class="cd">${esc(colDesc(c))}</span>` : ''}<span class="cc">${esc(L.count(cc.get(c.id) || 0))}</span></button>`).join('') + `</div></section>`;
+  if (favs.length) h += `<section class="sect"><h2>${esc(L.recs)}</h2><div class="list">${favs.map(r => renderRow(r)).join('')}</div></section>`;
+  h += `<button class="alllink" data-act="archive">${esc(L.browseAll(d.resources.length))}</button>`;
+  return `<div class="page">${h}</div>`;
+}
+
+function renderCollection() {
+  const d = S.data, L = t(), id = S.f.col, c = byId(d.collections, id);
+  const lay = c ? colLayout(c) : [];
+  const n = lay.reduce((s, e) => s + (e.f ? e.items.length : 1), 0);
+  let h = `<div class="colhead"><button class="back" data-act="home">${esc(L.allCols)}</button>
+    <h2>${esc(c ? nm(c) : id)}</h2>${c && colDesc(c) ? `<p>${esc(colDesc(c))}</p>` : ''}
+    <div class="cc"><span>${esc(L.count(n))}</span>${S.admin && c ? `<button class="btn" data-act="arrange">${esc(L.arrange)}</button>` : ''}</div></div>`;
+  if (!n && !lay.length) return `<div class="page">${h}<p class="empty" style="padding:0">${esc(L.emptyCol)}</p></div>`;
+  const row = rid => { const r = byId(d.resources, rid); return r ? renderRow(r, id) : ''; };
+  h += `<div class="colitems">` + lay.map(e => {
+    if (!e.f) return row(e.r);
+    if (!e.items.length && !S.admin) return '';
+    const key = id + ':' + e.f;
+    return `<details class="folder" data-key="${esc(key)}" ${S.openFolders.has(key) ? 'open' : ''}><summary><span class="fi">▸</span><span class="fn">${esc(folderName(e))}</span><span class="n">${e.items.length || esc(L.emptyFolder)}</span></summary><div class="fbody">${e.items.map(row).join('')}</div></details>`;
+  }).join('') + `</div>`;
+  return `<div class="page">${h}</div>`;
+}
+
 function render() {
   if (!S.data) return;
+  const v = currentView();
   renderStatic();
-  renderSide();
-  renderCols();
-  const list = filtered();
-  renderActive(list.length);
-  $('#list').innerHTML = list.length ? list.map(renderRow).join('') : `<div class="empty">${esc(t().noResults)}</div>`;
+  document.body.classList.remove('v-home', 'v-col', 'v-all');
+  document.body.classList.add('v-' + v);
+  $('#archive').hidden = v !== 'all';
+  $('#page').hidden = v === 'all';
+  if (v === 'all') {
+    renderSide();
+    const list = filtered();
+    renderActive(list.length);
+    $('#list').innerHTML = list.length ? list.map(r => renderRow(r)).join('') : `<div class="empty">${esc(t().noResults)}</div>`;
+    $('#page').innerHTML = '';
+  } else {
+    $('#page').innerHTML = v === 'col' ? renderCollection() : renderHome();
+    $('#list').innerHTML = '';
+  }
   writeUrl();
 }
 
@@ -793,6 +879,52 @@ function flash(id) {
   el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
 }
 
+/* ---------- Sammlung anordnen ---------- */
+function openArrange() {
+  const c = byId(S.data.collections, S.f.col); if (!c) return;
+  MODAL = { kind: 'arrange', col: c.id, draft: structuredClone(colLayout(c)) };
+  openModal(`<div id="arrBody"></div>`); $('#modal').classList.add('wide');
+  renderArrange();
+}
+function renderArrange() {
+  const L = t(), M = MODAL, D = M.draft, c = byId(S.data.collections, M.col);
+  const title = rid => { const r = byId(S.data.resources, rid); return r ? r.title : rid; };
+  const folders = D.map((e, i) => e.f ? { i, id: e.f, name: (e.de || e.en || '').trim() || `${L.folderDefault} ${i + 1}` } : null).filter(Boolean);
+  const sel = (rid, cur, i, j) => `<select data-move="${esc(rid)}" data-i="${i}" ${j !== undefined ? `data-j="${j}"` : ''}><option value="">${esc(L.single)}</option>${folders.map(f => `<option value="${esc(f.id)}" ${f.id === cur ? 'selected' : ''}>📁 ${esc(f.name)}</option>`).join('')}</select>`;
+  const arrows = (act, i, j, first, last) => `<button type="button" class="mv" data-act="${act}" data-dir="-1" data-i="${i}" ${j !== undefined ? `data-j="${j}"` : ''} title="${esc(L.up)}" ${first ? 'disabled' : ''}>↑</button><button type="button" class="mv" data-act="${act}" data-dir="1" data-i="${i}" ${j !== undefined ? `data-j="${j}"` : ''} title="${esc(L.down)}" ${last ? 'disabled' : ''}>↓</button>`;
+  let h = `<h2>${esc(L.arrange)}: ${esc(nm(c))}</h2><p class="hint">${esc(L.arrHint)}</p><div class="arr-list">`;
+  h += D.map((e, i) => {
+    if (!e.f) return `<div class="ai"><span class="tt" title="${esc(title(e.r))}">${esc(title(e.r))}</span>${sel(e.r, '', i)}${arrows('amove', i, undefined, i === 0, i === D.length - 1)}</div>`;
+    return `<div class="arr-folder"><div class="fh"><span>📁</span><input data-i="${i}" data-k="de" placeholder="${esc(L.folderDe)}" value="${esc(e.de)}"><input data-i="${i}" data-k="en" placeholder="${esc(L.folderEn)}" value="${esc(e.en)}">${arrows('amove', i, undefined, i === 0, i === D.length - 1)}<button type="button" class="mv" data-act="aunfold" data-i="${i}" title="${esc(L.unfold)}">×</button></div>` +
+      (e.items.length ? e.items.map((rid, j) => `<div class="ai"><span class="tt" title="${esc(title(rid))}">${esc(title(rid))}</span>${sel(rid, e.f, i, j)}${arrows('fmove', i, j, j === 0, j === e.items.length - 1)}</div>`).join('') : `<div class="none">${esc(L.emptyFolder)}</div>`) + `</div>`;
+  }).join('');
+  h += `</div><button type="button" class="btn" data-act="anewfolder" style="margin-top:.4rem">${esc(L.newFolder)}</button>
+    <div class="actions"><button type="button" class="btn" data-act="close">${esc(L.cancel)}</button><button type="button" class="btn primary" data-act="asave">${esc(L.save)}</button></div>`;
+  const sc = $('.arr-list') ? $('.arr-list').scrollTop : 0;
+  $('#arrBody').innerHTML = h;
+  $('.arr-list').scrollTop = sc;
+}
+function arrangeMove(rid, fromI, fromJ, target) {
+  const D = MODAL.draft;
+  if (fromJ === undefined) {            // war einzeln
+    if (!target) return;
+    D.splice(fromI, 1);
+    const f = D.find(e => e.f === target); if (f) f.items.push(rid);
+  } else {                              // war in einem Ordner
+    D[fromI].items.splice(fromJ, 1);
+    if (!target) D.splice(fromI + 1, 0, { r: rid });   // direkt unter den Ordner
+    else { const f = D.find(e => e.f === target); if (f) f.items.push(rid); }
+  }
+  renderArrange();
+}
+async function saveArrange() {
+  const M = MODAL, L = t();
+  const layout = M.draft.map(e => e.f ? { f: e.f, de: (e.de || '').trim() || (e.en || '').trim() || L.folderDefault, en: (e.en || '').trim(), items: [...e.items] } : { r: e.r });
+  const c = byId(S.data.collections, M.col);
+  const ok = await ghSave(d => { const x = byId(d.collections, M.col); if (x) x.layout = layout; }, `Sammlung angeordnet: ${c ? c.de : M.col}`);
+  if (ok) closeModal();
+}
+
 /* ---------- Verwalten ---------- */
 const MTABS = ['site', 'types', 'languages', 'tagGroups', 'tags', 'collections'];
 function openManage(tab = 'types') {
@@ -887,19 +1019,23 @@ async function saveManage() {
 
 /* ---------- Events ---------- */
 function toggleSet(set, id) { set.has(id) ? set.delete(id) : set.add(id); }
+function clearFilters() { Object.assign(S.f, { q: '', types: new Set(), langs: new Set(), tags: new Set(), author: '', fav: false }); }
+function toArchive() { const was = currentView(); S.f.col = ''; S.view = 'all'; render(); if (was !== 'all') window.scrollTo({ top: 0 }); }
 document.addEventListener('click', async e => {
   const el = e.target.closest('[data-act]');
   if (!el) return;
   const act = el.dataset.act, id = el.dataset.id, f = S.f, d = S.data;
   switch (act) {
-    case 'type': toggleSet(f.types, id); break;
-    case 'lang': toggleSet(f.langs, id); break;
-    case 'tag': toggleSet(f.tags, id); break;
-    case 'col': f.col = f.col === id ? '' : id; render(); window.scrollTo({ top: 0 }); return;
-    case 'author': f.author = f.author === id ? '' : id; break;
-    case 'fav': f.fav = !f.fav; break;
+    case 'type': toggleSet(f.types, id); toArchive(); return;
+    case 'lang': toggleSet(f.langs, id); toArchive(); return;
+    case 'tag': toggleSet(f.tags, id); toArchive(); return;
+    case 'col': clearFilters(); f.col = id; render(); window.scrollTo({ top: 0 }); return;
+    case 'home': clearFilters(); f.col = ''; S.view = 'home'; $('#q').value = ''; render(); window.scrollTo({ top: 0 }); return;
+    case 'archive': f.col = ''; S.view = 'all'; render(); window.scrollTo({ top: 0 }); return;
+    case 'author': f.author = f.author === id ? '' : id; toArchive(); return;
+    case 'fav': f.fav = !f.fav; toArchive(); return;
     case 'clear-q': f.q = ''; $('#q').value = ''; break;
-    case 'reset': Object.assign(f, { q: '', types: new Set(), col: '', langs: new Set(), tags: new Set(), author: '', fav: false }); $('#q').value = ''; break;
+    case 'reset': clearFilters(); S.view = 'all'; $('#q').value = ''; break;
     case 'ui': S.ui = id; localStorage.setItem(LS_UI, id); break;
     case 'toggle-side': $('#side').classList.toggle('open'); return;
     case 'random': {
@@ -927,6 +1063,20 @@ document.addEventListener('click', async e => {
       setTimeout(() => URL.revokeObjectURL(a.href), 1000); return;
     }
     case 'manage': openManage(); return;
+    case 'arrange': openArrange(); return;
+    case 'amove': case 'fmove': {
+      const D = MODAL.draft, i = Number(el.dataset.i), dir = Number(el.dataset.dir);
+      const A = act === 'amove' ? D : D[i].items, k = act === 'amove' ? i : Number(el.dataset.j), m = k + dir;
+      if (m < 0 || m >= A.length) return;
+      [A[k], A[m]] = [A[m], A[k]]; renderArrange(); return;
+    }
+    case 'aunfold': { const D = MODAL.draft, i = Number(el.dataset.i); D.splice(i, 1, ...D[i].items.map(r => ({ r }))); renderArrange(); return; }
+    case 'anewfolder': {
+      const D = MODAL.draft; D.push({ f: 'f' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), de: '', en: '', items: [] });
+      renderArrange(); const inp = document.querySelectorAll('.arr-folder input[data-k=de]'); const last = inp[inp.length - 1]; if (last) { last.focus(); last.scrollIntoView({ block: 'nearest' }); }
+      return;
+    }
+    case 'asave': saveArrange(); return;
     // Formular: Tags & Sammlungen
     case 'rm-tag': MODAL.tags = MODAL.tags.filter(x => x !== id); renderTagbox(true); return;
     case 'pick-tag': pickTag(id); return;
@@ -969,10 +1119,11 @@ document.addEventListener('submit', e => {
 
 document.addEventListener('input', e => {
   const el = e.target;
-  if (el.id === 'q') { clearTimeout(el._t); el._t = setTimeout(() => { S.f.q = el.value; render(); }, 150); }
+  if (el.id === 'q') { clearTimeout(el._t); el._t = setTimeout(() => { S.f.q = el.value; S.f.col = ''; S.view = 'all'; render(); }, 150); }
   else if (el.id === 'tagFilter') { S.tagFilter = el.value; applyTagFilter(); }
   else if (el.id === 'tagInput') { MODAL.hi = 0; renderSugg(); }
   else if (el.id === 'mFilter') { MODAL.filter = el.value; const pos = el.selectionStart; renderManage(); const n = $('#mFilter'); n.focus(); n.setSelectionRange(pos, pos); }
+  else if (MODAL && MODAL.kind === 'arrange' && el.dataset.k) { MODAL.draft[Number(el.dataset.i)][el.dataset.k] = el.value; }
   else if (MODAL && MODAL.kind === 'manage') {
     if (el.dataset.m === 'siteName') MODAL.draft.siteName = el.value;
     else if (el.dataset.i !== undefined) MODAL.draft[MODAL.tab][Number(el.dataset.i)][el.dataset.k] = el.value;
@@ -981,6 +1132,8 @@ document.addEventListener('input', e => {
 document.addEventListener('change', e => {
   const el = e.target;
   if (el.id === 'sort') { S.f.sort = el.value; render(); }
+  else if (MODAL && MODAL.kind === 'arrange' && el.dataset.k) { renderArrange(); } // Ordnernamen in den Auswahlfeldern aktualisieren
+  else if (el.dataset.move !== undefined && MODAL && MODAL.kind === 'arrange') { arrangeMove(el.dataset.move, Number(el.dataset.i), el.dataset.j !== undefined ? Number(el.dataset.j) : undefined, el.value); }
   else if (el.id === 'newTagGroup') { MODAL.group = el.value; localStorage.setItem(LS_GROUP, el.value); }
   else if (el.dataset.col !== undefined) { const id = el.dataset.col; MODAL.cols = el.checked ? [...new Set([...MODAL.cols, id])] : MODAL.cols.filter(x => x !== id); }
   else if (MODAL && MODAL.kind === 'manage' && el.dataset.k === 'group') { MODAL.draft.tags[Number(el.dataset.i)].group = el.value; MODAL.lastGroup = el.value; }
@@ -1004,7 +1157,8 @@ document.addEventListener('keydown', e => {
   if (e.target.id === 'newColName' && e.key === 'Enter') { e.preventDefault(); addCol(); return; }
   if (e.key === '/' && !MODAL && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); $('#q').focus(); }
 });
-window.addEventListener('popstate', () => { readUrl(); $('#q').value = S.f.q; render(); });
+window.addEventListener('popstate', () => { readUrl(); S.lastKey = viewKey(); $('#q').value = S.f.q; render(); });
+document.addEventListener('toggle', e => { const d = e.target; if (d.classList && d.classList.contains('folder')) { d.open ? S.openFolders.add(d.dataset.key) : S.openFolders.delete(d.dataset.key); } }, true);
 
 /* ---------- Start ---------- */
 (async function init() {
