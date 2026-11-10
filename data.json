@@ -392,8 +392,10 @@
         "korea",
         "propaganda"
       ],
-      "collections": [],
-      "fav": false,
+      "collections": [
+        "korea"
+      ],
+      "fav": true,
       "added": "2026-11-06"
     },
     {
