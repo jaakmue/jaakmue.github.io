@@ -178,28 +178,28 @@
       "en": "China Basics",
       "layout": [
         {
-          "r": "rmw5gzgtv"
-        },
-        {
-          "r": "rmw5guu4y"
-        },
-        {
-          "r": "rmw5gjxit"
-        },
-        {
           "r": "rmw5e35dv"
         },
         {
-          "r": "rmw58evk6"
+          "f": "fmwb5bzqzfng",
+          "de": "Sozialismus chinesischer Prägung",
+          "en": "Socialism with Chinese characteristics",
+          "items": [
+            "rmw5gzgtv",
+            "rmw5guu4y",
+            "rmw58evk6",
+            "r2"
+          ]
         },
         {
-          "r": "r3"
-        },
-        {
-          "r": "r2"
-        },
-        {
-          "r": "r1"
+          "f": "fmwb5b7va39k",
+          "de": "China und die Welt",
+          "en": "China and the world",
+          "items": [
+            "rmw5gjxit",
+            "r3",
+            "r1"
+          ]
         },
         {
           "f": "fmwb5494giav",
