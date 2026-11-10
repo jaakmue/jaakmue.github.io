@@ -174,7 +174,7 @@
   "collections": [
     {
       "id": "china-verstehen",
-      "de": "China Basics",
+      "de": "China",
       "en": "China Basics",
       "layout": [
         {
@@ -218,14 +218,19 @@
       "en": "Middle East conflict"
     },
     {
-      "id": "medien-propaganda",
-      "de": "Medien & Propaganda",
-      "en": "Media & Propaganda"
-    },
-    {
       "id": "ukraine-krieg",
       "de": "Ukraine-Krieg",
       "en": "War in Ukraine"
+    },
+    {
+      "id": "korea",
+      "de": "Korea",
+      "en": "Korea"
+    },
+    {
+      "id": "medien-propaganda",
+      "de": "Medien & Propaganda",
+      "en": "Media & Propaganda"
     }
   ],
   "resources": [
