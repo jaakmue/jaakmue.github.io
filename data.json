@@ -175,7 +175,41 @@
     {
       "id": "china-verstehen",
       "de": "China Basics",
-      "en": "China Basics"
+      "en": "China Basics",
+      "layout": [
+        {
+          "r": "rmw5gzgtv"
+        },
+        {
+          "r": "rmw5guu4y"
+        },
+        {
+          "r": "rmw5gjxit"
+        },
+        {
+          "r": "rmw5e35dv"
+        },
+        {
+          "r": "rmw58evk6"
+        },
+        {
+          "r": "r3"
+        },
+        {
+          "r": "r2"
+        },
+        {
+          "r": "r1"
+        },
+        {
+          "f": "fmwb5494giav",
+          "de": "Tian’anmen-Platz 1989",
+          "en": "Tiananmensquare 1989",
+          "items": [
+            "rmw5efop6"
+          ]
+        }
+      ]
     },
     {
       "id": "nahostkonflikt",
