@@ -29,16 +29,18 @@ input:focus,select:focus,textarea:focus{border-color:var(--dim)}
 /* Header */
 .top{position:sticky;top:0;z-index:20;height:var(--hdr);display:flex;align-items:center;gap:0.7143rem;padding:0 1rem;background:var(--bg);border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:baseline;gap:0.7143rem;min-width:0;white-space:nowrap}
-.brand h1{margin:0;font:600 1.357rem/1 Georgia,"Times New Roman",serif;color:var(--strong);letter-spacing:.3px}
+.brand h1{margin:0;font:600 1.357rem/1.2 Georgia,"Times New Roman",serif;color:var(--strong);letter-spacing:.3px;overflow:hidden;text-overflow:ellipsis}
 .count{color:var(--dim);font-size:0.8571rem}
 #q{flex:1;min-width:8.5714rem;max-width:40rem;margin-left:auto}
 .btn{border:1px solid var(--line);border-radius:0.2857rem;padding:0.3571rem 0.6429rem;background:var(--panel);white-space:nowrap}
 .btn:hover{border-color:var(--dim)}
 .btn.primary{background:var(--fg);color:var(--bg);border-color:var(--fg);font-weight:600}
 .btn.danger{color:var(--danger)}
-.langsw{display:flex;border:1px solid var(--line);border-radius:0.2857rem;overflow:hidden}
-.langsw button{padding:0.3571rem 0.5714rem;color:var(--dim)}
-.langsw button.on{background:var(--panel2);color:var(--strong);font-weight:600}
+.langsw{display:flex;flex-shrink:0;gap:.35rem;align-items:center}
+.langsw button{display:flex;padding:.2rem;border-radius:.25rem;opacity:.4;transition:opacity .15s}
+.langsw button:hover{opacity:.8}
+.langsw button.on{opacity:1;background:var(--panel2)}
+.flag{display:block;width:1.6rem;height:1.07rem;border-radius:2px}
 .only-mobile{display:none}
 
 /* Admin bar */
@@ -199,7 +201,8 @@ textarea{resize:vertical;min-height:3.7143rem}
 #toast.bad{border-color:var(--danger);color:var(--danger)}
 
 @media (max-width:760px){
-  .top{gap:0.4286rem;padding:0 0.7143rem}
+  .top{gap:0.5rem;padding:0 0.7143rem}
+  #q{min-width:5rem}
   .count,.hide-m{display:none}
   .only-mobile{display:inline-block}
   .wrap{grid-template-columns:1fr}
@@ -224,9 +227,8 @@ textarea{resize:vertical;min-height:3.7143rem}
 <header class="top">
   <div class="brand"><h1 id="siteName" data-act="home" role="link" tabindex="0">Fundus</h1></div>
   <input id="q" type="search" autocomplete="off">
-  <button class="navbtn" data-act="archive" id="archiveBtn"></button>
   <div class="langsw" role="group" aria-label="Language">
-    <button data-act="ui" data-id="de">DE</button><button data-act="ui" data-id="en">EN</button>
+    <button data-act="ui" data-id="de" title="Deutsch" aria-label="Deutsch"><svg class="flag" viewBox="0 0 5 3" aria-hidden="true"><rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg></button><button data-act="ui" data-id="en" title="English" aria-label="English"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><clipPath id="ukc"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#ukc)" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></svg></button>
   </div>
 </header>
 <div class="adminbar" id="adminbar" hidden>
@@ -450,9 +452,7 @@ function renderStatic() {
   document.documentElement.lang = S.ui;
   document.title = S.data ? S.data.siteName : 'Fundus';
   $('#siteName').textContent = $('#footName').textContent = S.data ? S.data.siteName : 'Fundus';
-  $('#q').placeholder = L.search;
-  $('#archiveBtn').textContent = L.allRes;
-  $('#archiveBtn').classList.toggle('on', S.data && currentView() === 'all');
+  $('#q').placeholder = window.innerWidth < 760 ? L.search.split(' (')[0] : L.search; // am Handy kurz
   document.querySelectorAll('.langsw button').forEach(b => b.classList.toggle('on', b.dataset.id === S.ui));
   $('#adminbar').hidden = !S.admin;
   document.body.classList.toggle('admin', S.admin);
